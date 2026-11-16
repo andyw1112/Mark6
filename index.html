@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>六合彩生肖沖合</title>
+<style>
+:root{--bg:#eef1ee;--sf:#fff;--ink:#14302e;--mut:#5d716f;--ln:#d3dbd7;--chong:#c0392b;--he:#1f7a5a;--san:#7c4ddb;--gold:#f2c230;--r:#d6322b;--b:#2a6fc9;--g:#2e9a52;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1a19;--sf:#172725;--ink:#e6efec;--mut:#93a8a4;--ln:#2a3f3c;--chong:#ef6b5c;--he:#4fc79a;--san:#a98bf0;--gold:#f2c230}}
+:root[data-theme="dark"]{--bg:#0f1a19;--sf:#172725;--ink:#e6efec;--mut:#93a8a4;--ln:#2a3f3c;--chong:#ef6b5c;--he:#4fc79a;--san:#a98bf0;--gold:#f2c230}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.65 "Noto Serif TC","Songti TC","PMingLiU",serif}
+.wrap{max-width:980px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:clamp(26px,5vw,38px);margin:0 0 4px;letter-spacing:.04em}
+h2{font-size:20px;margin:0 0 10px}
+.sub{color:var(--mut);margin:0 0 18px}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:10px;padding:18px;margin-bottom:16px}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+label{font-size:13px;color:var(--mut)}
+input,select,textarea,button{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--ln);border-radius:6px;padding:6px 10px}
+button{cursor:pointer}
+button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+:focus-visible{outline:2px solid var(--san);outline-offset:2px}
+.seg{display:inline-flex;gap:4px;flex-wrap:wrap}
+.hero{display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:20px;align-items:center}
+@media(max-width:720px){.hero{grid-template-columns:1fr}}
+#ring{width:100%;max-width:300px;margin:auto;display:block}
+.pillar{font-size:34px;letter-spacing:.2em}
+.pool{margin:10px 0}
+.pool b{display:inline-block;min-width:44px;margin-right:10px}
+.tag{display:inline-block;padding:0 8px;border-radius:4px;color:#fff;font-size:13px;margin-right:6px}
+.t-c{background:var(--chong)}.t-h{background:var(--he)}.t-s{background:var(--san)}.t-d{background:#e0651a}.t-y{background:#3b7be0}.t-k{background:#3a9a78}
+.balls{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.n{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font:600 13px/1 system-ui,sans-serif;color:#fff}
+.n.r{background:var(--r)}.n.b{background:var(--b)}.n.g{background:var(--g)}
+.n.hit{outline:3px solid var(--san);outline-offset:1px}
+.small{font-size:13px;color:var(--mut)}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:640px}
+th,td{padding:6px 8px;border-bottom:1px solid var(--ln);text-align:left;vertical-align:top}
+th{color:var(--mut);font-weight:600}
+.pos{color:var(--he)}.neg{color:var(--chong)}
+.bars{display:flex;align-items:flex-end;gap:6px;height:130px;border-bottom:1px solid var(--ln);padding:0 4px;margin:10px 0 4px;overflow-x:auto}
+.bar{flex:1;min-width:22px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;font-size:11px}
+.bar i{display:block;width:100%;background:var(--he);border-radius:3px 3px 0 0}
+.bar.lo i{background:var(--chong)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px}
+.stat{border:1px solid var(--ln);border-radius:8px;padding:10px}
+.stat strong{display:block;font-size:22px}
+.g49{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+@media(max-width:480px){.g49{gap:4px}}
+.cell{border:1px solid var(--ln);border-radius:8px;padding:6px 2px;text-align:center;font-size:12px}
+.cell .n{margin:0 auto 2px}
+.cell.c{border-color:var(--chong);box-shadow:inset 0 0 0 2px var(--chong)}
+.cell.h{border-color:var(--he);box-shadow:inset 0 0 0 2px var(--he)}
+.cell.s{border-color:var(--san);box-shadow:inset 0 0 0 2px var(--san)}
+textarea{width:100%;min-height:110px;font-family:ui-monospace,monospace;font-size:12px}
+.bw{display:inline-flex;flex-direction:column;align-items:center;gap:4px}
+.n.L{width:44px;height:44px;font-size:15px;position:relative}
+.rg-g{box-shadow:0 0 0 3px var(--gold)}.rg-c{box-shadow:0 0 0 2px var(--chong)}.rg-h{box-shadow:0 0 0 2px var(--he)}.rg-s{box-shadow:0 0 0 2px var(--san)}
+.dim{opacity:.4}
+.ck{position:absolute;top:-6px;right:-6px;width:16px;height:16px;border-radius:50%;background:var(--gold);color:#2b2200;font:700 10px/16px sans-serif;text-align:center;text-decoration:none}
+.tg{display:flex;gap:2px;min-height:16px}
+.tk{font:700 10px/16px sans-serif;font-style:normal;width:18px;height:16px;border-radius:3px;color:#fff;text-align:center}
+.tk.d{background:#e0651a}.tk.y{background:#3b7be0}.tk.s{background:#3a9a78}
+.chip{display:inline-block;padding:1px 12px;border-radius:99px;color:#fff;font:600 13px/24px sans-serif;margin:2px 4px 2px 0}
+.chip.g{background:var(--gold);color:#3a2d00}.chip.c{background:var(--chong)}.chip.h{background:var(--he)}.chip.s{background:var(--san)}.chip.d{background:#e0651a}.chip.y{background:#3b7be0}.chip.k{background:#3a9a78}.chip.nt{background:var(--bg);color:var(--ink);border:1px solid var(--ln)}
+.rowb{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0}
+.sp{border-left:1px dashed var(--ln);padding-left:10px;margin-left:4px;display:inline-flex;align-items:center;gap:6px}
+.ln{margin:4px 0;font-size:13px}
+.lg{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--mut);margin:8px 0}
+.lg i{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+.cl{display:inline-block;font:700 11px/1 sans-serif;margin:0 2px 0 4px}
+.pc{min-width:330px}.pc .gp{display:flex;flex-wrap:nowrap;align-items:center;gap:4px;margin:3px 0}.pc .cl{width:18px;flex:none;margin:0}.pc .n{width:26px;height:26px;font-size:11px;flex:none}.ts{overflow-x:auto;overflow-y:hidden;margin-top:14px;height:16px}.ts div{height:1px}.ts::-webkit-scrollbar,.tw::-webkit-scrollbar{height:12px}.ts::-webkit-scrollbar-thumb,.tw::-webkit-scrollbar-thumb{background:var(--mut);border-radius:6px}.ts::-webkit-scrollbar-track,.tw::-webkit-scrollbar-track{background:var(--ln);border-radius:6px}
+td .balls .n.L{width:34px;height:34px;font-size:13px}
+.tbl2{min-width:1340px}.tbl2 td.num{text-align:center;font-size:18px;font-weight:700}
+.pill{display:inline-block;background:#fbeeb8;color:#5b4300;border:1px solid #e8cf6a;border-radius:6px;padding:0 8px;font-weight:700}
+.pstat{font-size:12px;color:var(--mut);margin:2px 0 6px}.pstat strong{color:var(--ink)}
+.disc{font-size:12px;color:var(--mut);border-top:1px solid var(--ln);padding-top:14px;margin-top:24px}
+</style>
+</head>
+<body>
+<main class="wrap">
+<h1>六合彩生肖沖合</h1>
+<p class="sub">按開獎日日柱（或年肖、上期特別號碼）推算沖、合、三合生肖與號碼，再用你輸入的歷史開獎做回測。</p>
+
+<section class="card">
+  <div class="row">
+    <label>開獎日 <input type="date" id="date"></label>
+    <label>生肖年 <select id="year"></select></label>
+    <span class="small">基準</span>
+    <div class="seg" id="mode">
+      <button data-v="pillar" class="on">日柱</button>
+      <button data-v="year">年肖</button>
+      <button data-v="last">上期特別號碼</button>
+    </div>
+    <label><input type="checkbox" id="san" checked> 加三合</label>
+  </div>
+</section>
+
+<section class="card hero">
+  <svg id="ring" viewBox="-150 -150 300 300" role="img" aria-label="十二生肖沖合圖"></svg>
+  <div>
+    <div class="small" id="dlabel"></div>
+    <div class="pillar" id="pillar"></div>
+    <div class="small" id="basenote"></div>
+    <div class="pool"><span class="tag t-c">沖</span><b id="cz"></b><span class="small" id="cc"></span><div class="balls" id="cb"></div><div class="pstat" id="st_c"></div></div>
+    <div class="pool"><span class="tag t-h">合</span><b id="hz"></b><span class="small" id="hc"></span><div class="balls" id="hb"></div><div class="pstat" id="st_h"></div></div>
+    <div class="pool" id="sanrow"><span class="tag t-s">三合</span><b id="sz"></b><span class="small" id="sc"></span><div class="balls" id="sb"></div><div class="pstat" id="st_s"></div>
+    <div class="pool"><span class="tag t-d">日肖</span><b id="dz"></b><span class="small" id="dc"></span><div class="balls" id="db"></div><div class="pstat" id="st_d"></div></div>
+    <div class="pool"><span class="tag t-y">年肖</span><b id="yz"></b><span class="small" id="yc"></span><div class="balls" id="yb"></div><div class="pstat" id="st_y"></div></div>
+    <div class="pool"><span class="tag t-k">歲煞</span><b id="kz"></b><span class="small" id="kc"></span><div class="balls" id="kb"></div><div class="pstat" id="st_k"></div></div></div>
+  </div>
+</section>
+
+<section class="card" id="lastcard"></section>
+
+<section class="card">
+  <div class="row" style="justify-content:space-between">
+    <div><div class="small" style="color:var(--san)">對上期數回測</div><h2 style="margin:0">沖合號碼 vs 開獎結果</h2></div>
+    <div class="seg" id="win"><button data-v="10">對上 10 期</button><button data-v="15">15 期</button><button data-v="20" class="on">20 期</button></div>
+  </div>
+  <div id="bt" style="margin-top:12px"></div>
+</section>
+
+<section class="card">
+  <h2>輸入開獎資料</h2>
+  <p class="small">每行一期：期數, 日期, 六個正選號碼, 特別號碼；可選用「|」加備註（例如 <code>| 有人中｜滾存｜投注 $4,593萬</code>，或寫「冇人中」「金多寶」「特別大」）。資料只留喺你部機，唔會上傳。</p>
+  <textarea id="data" placeholder="26/121, 2026-11-15, 02 08 11 35 43 47, 48 | 有人中"></textarea>
+  <div class="row" style="margin-top:8px"><button id="run">分析</button><span class="small" id="perr"></span></div>
+</section>
+
+<section class="card">
+  <h2>1–49 號碼圖</h2>
+  <p class="small">紅框＝沖、綠框＝合、金框＝三合。波色：紅／藍／綠。</p>
+  <div class="g49" id="g49"></div>
+</section>
+
+<section class="card">
+  <h2>點樣計</h2>
+  <ul class="small">
+    <li>日柱：用開獎日公曆換算干支，取日支為基準。</li>
+    <li>沖：與基準六位對沖（子午、丑未、寅申、卯酉、辰戌、巳亥）。</li>
+    <li>合：六合（子丑、寅亥、卯戌、辰酉、巳申、午未）。三合：申子辰、亥卯未、寅午戌、巳酉丑。</li>
+    <li>號碼：生肖年當年生肖為 1、13、25、37、49，之後逆序排：馬年次序係馬、蛇、龍、兔、虎、牛、鼠、豬、狗、雞、猴、羊。</li>
+    <li>隨機期望：池內號碼數 × 6 ÷ 49（回測只計 6 個正選號碼）。</li>
+  </ul>
+</section>
+
+<div class="disc"><strong>免責聲明</strong>：生肖沖合屬傳統民俗玩法，並無科學根據，亦不能預測開獎結果。歷史命中只反映已發生嘅隨機抽樣。本頁只供娛樂與統計研究，不構成投注建議。請量力而為，未滿 18 歲人士不得投注。</div>
+</main>
+
+<script>
+(function(){
+var Z="鼠牛虎兔龍蛇馬羊猴雞狗豬",ST="甲乙丙丁戊己庚辛壬癸",BR="子丑寅卯辰巳午未申酉戌亥";
+var RED=[1,2,7,8,12,13,18,19,23,24,29,30,34,35,40,45,46],BLUE=[3,4,9,10,14,15,20,25,26,31,36,37,41,42,47,48];
+var $=function(i){return document.getElementById(i)};
+var mode="pillar",win=20,rows=[];
+function col(n){return RED.indexOf(n)>-1?"r":BLUE.indexOf(n)>-1?"b":"g"}
+function mod(a,m){return((a%m)+m)%m}
+function jdn(y,m,d){var a=Math.floor((14-m)/12),yy=y+4800-a,mm=m+12*a-3;return d+Math.floor((153*mm+2)/5)+365*yy+Math.floor(yy/4)-Math.floor(yy/100)+Math.floor(yy/400)-32045}
+function pillar(s){var p=s.split("-").map(Number),i=mod(jdn(p[0],p[1],p[2])-2451545+54,60);return{stem:i%10,br:i%12,txt:ST[i%10]+BR[i%12]}}
+function nums(br,yb){var o=[];for(var n=1;n<=49;n++)if(mod(yb-(n-1),12)===br)o.push(n);return o}
+function pools(base,yb,withSan){
+  var c=mod(base+6,12),h=mod(1-base,12),s=[mod(base+4,12),mod(base+8,12)];
+  var P={c:{z:[c],n:nums(c,yb)},h:{z:[h],n:nums(h,yb)},s:{z:s,n:[]}};
+  s.forEach(function(b){P.s.n=P.s.n.concat(nums(b,yb))});P.s.n.sort(function(a,b){return a-b});
+  var all={};P.c.n.concat(P.h.n).forEach(function(n){all[n]=1});if(withSan)P.s.n.forEach(function(n){all[n]=1});
+  P.all=Object.keys(all).map(Number).sort(function(a,b){return a-b});return P}
+function balls(arr,hit){return arr.map(function(n){return '<span class="n '+col(n)+(hit&&hit[n]?' hit':'')+'">'+(n<10?'0'+n:n)+'</span>'}).join("")}
+function zn(a){return a.map(function(b){return Z[b]}).join("、")}
+function nextDraw(){var d=new Date();for(var i=0;i<8;i++){var w=d.getDay();if(w===2||w===4||w===6)break;d.setDate(d.getDate()+1)}
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function yearOf(){return +$("year").value}
+function lastSpecialBr(){if(!rows.length)return null;var l=rows[0];return mod(yearOf()-(l.sp-1),12)}
+function baseFor(dateStr){
+  var pl=pillar(dateStr),yb=yearOf();
+  if(mode==="year")return{b:yb,note:"以生肖年（"+Z[yb]+"）為基準",p:pl};
+  if(mode==="last"){var lb=lastSpecialBr();if(lb===null)return{b:pl.br,note:"未有開獎資料，暫用日柱",p:pl};return{b:lb,note:"以上期特別號碼生肖（"+Z[lb]+"）為基準",p:pl}}
+  return{b:pl.br,note:"以日支（"+BR[pl.br]+"，"+Z[pl.br]+"）為基準",p:pl}}
+function ring(base,P){
+  var s="",R=118;
+  for(var i=0;i<12;i++){var a=(i/12)*2*Math.PI-Math.PI/2,x=R*Math.cos(a),y=R*Math.sin(a),f="var(--sf)",st="var(--ln)",w=1;
+    if(i===base){f="var(--ink)"}else if(i===P.c.z[0]){f="var(--chong)"}else if(i===P.h.z[0]){f="var(--he)"}else if(P.s.z.indexOf(i)>-1&&$("san").checked){f="var(--san)"}
+    var lit=f!=="var(--sf)";
+    s+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="22" fill="'+f+'" stroke="'+st+'" stroke-width="'+w+'"/>';
+    s+='<text x="'+x.toFixed(1)+'" y="'+(y+6).toFixed(1)+'" text-anchor="middle" font-size="20" fill="'+(lit?"#fff":"var(--ink)")+'">'+Z[i]+'</text>'}
+  var a1=base/12*2*Math.PI-Math.PI/2,a2=P.c.z[0]/12*2*Math.PI-Math.PI/2;
+  s+='<line x1="'+(R*Math.cos(a1)).toFixed(1)+'" y1="'+(R*Math.sin(a1)).toFixed(1)+'" x2="'+(R*Math.cos(a2)).toFixed(1)+'" y2="'+(R*Math.sin(a2)).toFixed(1)+'" stroke="var(--chong)" stroke-width="1.5" stroke-dasharray="4 4"/>';
+  s+='<text x="0" y="-4" text-anchor="middle" font-size="26" fill="var(--ink)">'+BR[base]+'</text><text x="0" y="18" text-anchor="middle" font-size="12" fill="var(--mut)">基準</text>';
+  $("ring").innerHTML=s}
+function render(){
+  var ds=$("date").value;if(!ds)return;
+  var B=baseFor(ds),P=pools(B.b,yearOf(),$("san").checked);
+  $("dlabel").textContent=ds+" 日柱";$("pillar").textContent=B.p.txt+"日";$("basenote").textContent=B.note;
+  $("cz").textContent=zn(P.c.z);$("cc").textContent=P.c.n.length+" 個";$("cb").innerHTML=balls(P.c.n);
+  $("hz").textContent=zn(P.h.z);$("hc").textContent=P.h.n.length+" 個";$("hb").innerHTML=balls(P.h.n);
+  $("sanrow").style.display=$("san").checked?"":"none";
+  $("sz").textContent=zn(P.s.z);$("sc").textContent=P.s.n.length+" 個";$("sb").innerHTML=balls(P.s.n);
+  var yb0=yearOf(),Dn=nums(B.p.br,yb0),Yn=nums(yb0,yb0),sg=shaOf(B.p.br),Kn=[];
+  for(var q=1;q<=49;q++)if(sg.t.indexOf(q%10)>-1)Kn.push(q);
+  $("dz").textContent=Z[B.p.br]+"日";$("dc").textContent=Dn.length+" 個";$("db").innerHTML=balls(Dn);
+  $("yz").textContent=Z[yb0]+"年";$("yc").textContent=Yn.length+" 個";$("yb").innerHTML=balls(Yn);
+  $("kz").textContent="煞"+sg.d+"（尾 "+sg.t.join("、")+"）";$("kc").textContent=Kn.length+" 個";$("kb").innerHTML=balls(Kn);
+  ring(B.b,P);
+  var g="";for(var n=1;n<=49;n++){var k=P.c.n.indexOf(n)>-1?"c":P.h.n.indexOf(n)>-1?"h":($("san").checked&&P.s.n.indexOf(n)>-1)?"s":"";
+    g+='<div class="cell '+k+'"><span class="n '+col(n)+'">'+(n<10?"0"+n:n)+'</span>'+Z[mod(yearOf()-(n-1),12)]+'</div>'}
+  $("g49").innerHTML=g;heroStats();backtest()}
+function pad(n){return n<10?"0"+n:""+n}
+var WD="日一二三四五六";
+function shaOf(b){return [8,0,4].indexOf(b)>-1?{d:"南",t:[2,7]}:[5,9,1].indexOf(b)>-1?{d:"東",t:[3,8]}:[2,6,10].indexOf(b)>-1?{d:"北",t:[1,6]}:{d:"西",t:[4,9]}}
+function B(n,o){o=o||{};return '<span class="n '+col(n)+(o.L?' L':'')+(o.rg?' rg-'+o.rg:'')+(o.dim?' dim':'')+'">'+pad(n)+(o.ck?'<u class="ck">✓</u>':'')+'</span>'}
+function zo(n){return Z[mod(yearOf()-(n-1),12)]}
+function parse(){
+  var out=[],bad=0;
+  $("data").value.split(/\n/).forEach(function(line){
+    if(!line.trim())return;
+    var parts=line.split("|"),note=parts.slice(1).join("｜").trim();line=parts[0];
+    var d=line.match(/(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
+    var rest=line.replace(/\d{4}[-\/]\d{1,2}[-\/]\d{1,2}/,"").replace(/^\s*\d{2}\/\d{2,3}\s*[,，\s]/,"");
+    var m=rest.match(/\d{1,2}/g);
+    if(!d||!m||m.length<7){bad++;return}
+    var v=m.slice(-7).map(Number);
+    if(v.some(function(x){return x<1||x>49})){bad++;return}
+    var iss=(line.match(/\d{2}\/\d{2,3}/)||["—"])[0];
+    out.push({iss:iss,date:d[1]+"-"+String(d[2]).padStart(2,"0")+"-"+String(d[3]).padStart(2,"0"),b:v.slice(0,6),sp:v[6],note:note})});
+  out.sort(function(a,b){return a.date<b.date?1:-1});
+  $("perr").textContent=bad?bad+" 行格式唔啱，已略過":"";return out}
+function calc(r,i){
+  var pl=pillar(r.date),yb=yearOf(),b=pl.br;
+  if(mode==="year")b=yb;
+  if(mode==="last"){var pv=rows[i+1];b=pv?mod(yb-(pv.sp-1),12):pl.br}
+  var P=pools(b,yb,$("san").checked),d=r.b.concat([r.sp]);
+  var inn=function(a){return a.filter(function(n){return r.b.indexOf(n)>-1})},inn7=function(a){return a.filter(function(n){return d.indexOf(n)>-1})};
+  var D=nums(pl.br,yb),Y=nums(yb,yb),sg=shaOf(pl.br),SN=[];
+  for(var n=1;n<=49;n++)if(sg.t.indexOf(n%10)>-1)SN.push(n);
+  return{r:r,pl:pl,P:P,d:d,c:inn(P.c.n),h:inn(P.h.n),s:$("san").checked?inn(P.s.n):[],day:inn(D),yr:inn(Y),sha:inn(SN),day7:inn7(D),yr7:inn7(Y),sha7:inn7(SN),all:inn(P.all),D:D,Y:Y,SN:SN,sg:sg,exp:P.all.length*6/49}}
+function comb(n,r){var v=1;for(var i=0;i<r;i++)v=v*(n-i)/(i+1);return v}
+function p1(k){return 1-comb(49-k,6)/comb(49,6)}
+function stat(el,res,key,pf){
+  var n=res.length,played=0,sum=0,bp=0,be=0;
+  res.forEach(function(x){var k=pf(x).length,h=x[key].length;if(h>0)played++;sum+=h;bp+=p1(k);be+=k*6/49});
+  el.innerHTML='近 '+n+' 期有中 <strong>'+played+'/'+n+'（'+(played/n*100).toFixed(0)+'%）</strong> · 平均 <strong>'+(sum/n).toFixed(2)+'</strong> 個／期 · 隨機基準 '+(bp/n*100).toFixed(0)+'%，'+(be/n).toFixed(2)+' 個／期'}
+function heroStats(){
+  var ids=[["st_c","c",function(x){return x.P.c.n}],["st_h","h",function(x){return x.P.h.n}],["st_s","s",function(x){return x.P.s.n}],["st_d","day",function(x){return x.D}],["st_y","yr",function(x){return x.Y}],["st_k","sha",function(x){return x.SN}]];
+  if(!rows.length){ids.forEach(function(a){$(a[0]).textContent="輸入開獎資料後會顯示近期命中率"});return}
+  var res=rows.slice(0,20).map(function(r,i){return calc(r,i)});
+  ids.forEach(function(a){stat($(a[0]),res,a[1],a[2])})}
+function lastRes(){
+  var el=$("lastcard");
+  if(!rows.length){el.innerHTML='<h2>上期實際結果</h2><p class="small">喺下面輸入開獎資料後撳「分析」，就會顯示上期結果同命中分析。</p>';return}
+  var x=calc(rows[0],0),r=x.r;
+  function tg(n){var t="";if(x.D.indexOf(n)>-1)t+='<em class="tk d">日</em>';if(x.Y.indexOf(n)>-1)t+='<em class="tk y">年</em>';if(x.SN.indexOf(n)>-1)t+='<em class="tk s">煞</em>';return '<span class="tg">'+t+'</span>'}
+  function ball(n){var on=x.P.all.indexOf(n)>-1||x.D.indexOf(n)>-1||x.Y.indexOf(n)>-1;return '<span class="bw">'+B(n,{L:1,rg:on?"g":"",ck:on,dim:!on})+tg(n)+'</span>'}
+  function lst(a,sp){return a.length?a.map(function(n){return pad(n)+'('+(sp&&n===r.sp?'特':zo(n))+')'}).join(", "):"無"}
+  var sh=x.sg;
+  el.innerHTML='<div class="row"><h2 style="margin:0">上期 '+r.iss+'（'+r.date+'）實際結果</h2><span style="font-size:18px;font-weight:700">'+x.pl.txt+'日（'+Z[x.pl.br]+'）</span></div>'
+  +'<div class="rowb"><span class="chip g">沖合池中左 '+x.all.length+' 球</span><span class="chip c">沖中 '+x.c.length+'</span><span class="chip h">合中 '+x.h.length+'</span><span class="chip s">三合中 '+x.s.length+'</span><span class="chip d">日肖中 '+x.day7.length+'</span><span class="chip y">年肖中 '+x.yr7.length+'</span><span class="chip k">歲煞中 '+x.sha7.length+'</span></div>'
+  +'<div class="rowb">'+r.b.map(ball).join("")+'<span class="sp"><span class="small">特</span>'+ball(r.sp)+'</span></div>'
+  +'<div class="ln small">上期沖合池（'+x.P.all.length+' 個）：'+x.P.all.map(pad).join(", ")+'</div>'
+  +'<div class="ln"><span class="chip c">沖</span>中左：'+lst(x.c)+' <span class="chip h">合</span>中左：'+lst(x.h)+' <span class="chip s">三</span>中左：'+lst(x.s)+'</div>'
+  +'<div class="ln"><span class="chip d">日肖</span>'+Z[x.pl.br]+'日 中左：'+lst(x.day7)+' <span class="chip y">年肖</span>'+Z[yearOf()]+'年 中左：'+lst(x.yr7)+' <span class="chip k">歲煞</span>煞'+sh.d+'（尾 '+sh.t.join("、")+'）中左：'+lst(x.sha7,1)+'</div>'
+  +'<div class="ln small" style="margin-top:10px">球上標記：<em class="tk d">日</em> 當日生肖　<em class="tk y">年</em> 年生肖　<em class="tk s">煞</em> 歲煞尾數（三組各自獨立計；上方命中數連特別號碼一齊計）</div>'}
+function chart(res){
+  var n=res.length,W=54,L=30,T=24,PH=170,Bm=40,w=L+n*W+8,H=T+PH+Bm,mx=6;
+  res.forEach(function(x){mx=Math.max(mx,x.all.length,Math.ceil(x.exp))});
+  var Y=function(v){return T+PH-v/mx*PH},cx=function(i){return L+i*W+W/2};
+  var s='<svg viewBox="0 0 '+w+' '+H+'" width="'+w+'" height="'+H+'" role="img" aria-label="每期命中數">';
+  for(var g=0;g<=mx;g++)s+='<line x1="'+L+'" x2="'+(w-4)+'" y1="'+Y(g)+'" y2="'+Y(g)+'" stroke="var(--ln)"/><text x="'+(L-6)+'" y="'+(Y(g)+4)+'" text-anchor="end" font-size="11" fill="var(--mut)">'+g+'</text>';
+  res.forEach(function(x,i){
+    var acc=0;
+    [[x.c.length,"var(--chong)"],[x.h.length,"var(--he)"],[x.s.length,"var(--san)"]].forEach(function(p){
+      if(!p[0])return;
+      s+='<rect x="'+(cx(i)-16)+'" y="'+Y(acc+p[0])+'" width="32" height="'+(p[0]/mx*PH)+'" rx="3" fill="'+p[1]+'"/><text x="'+cx(i)+'" y="'+(Y(acc+p[0]/2)+4)+'" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">'+p[0]+'</text>';
+      acc+=p[0]});
+    if(acc)s+='<text x="'+cx(i)+'" y="'+(Y(acc)-5)+'" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">'+acc+'</text>';
+    s+='<text x="'+cx(i)+'" y="'+(T+PH+16)+'" text-anchor="middle" font-size="11" fill="var(--mut)">'+x.r.iss.split("/").pop()+'</text><text x="'+cx(i)+'" y="'+(T+PH+30)+'" text-anchor="middle" font-size="10" fill="var(--mut)">'+x.r.date.slice(5)+'</text>'});
+  function line(f,c,dash){
+    s+='<polyline fill="none" stroke="'+c+'" stroke-width="2" '+(dash?'stroke-dasharray="5 4" ':'')+'points="'+res.map(function(x,i){return cx(i)+','+Y(f(x))}).join(" ")+'"/>';
+    res.forEach(function(x,i){s+='<circle cx="'+cx(i)+'" cy="'+Y(f(x))+'" r="3.5" fill="var(--sf)" stroke="'+c+'" stroke-width="2"/>'})}
+  
+  
+  
+  return '<div class="tw">'+s+'</svg></div>'}
+function backtest(){
+  lastRes();
+  var el=$("bt");
+  if(!rows.length){el.innerHTML='<p class="small">未有資料。喺下面輸入開獎資料後撳「分析」。</p>';return}
+  var res=rows.slice(0,win).map(function(r,i){return calc(r,i)}),T=0,E=0;
+  res.forEach(function(x){T+=x.all.length;E+=x.exp});
+  var rolls=res.filter(function(x){return /冇人中|無人中/.test(x.r.note)}).length;
+  var jp=res.filter(function(x){return /金多寶/.test(x.r.note)}).map(function(x){return x.r.iss.split("/").pop()}),big=res.filter(function(x){return /特別大/.test(x.r.note)}).map(function(x){return x.r.iss.split("/").pop()});
+  var h='<div class="stats"><div class="stat"><span class="small">累計命中</span><strong>'+T+'</strong></div><div class="stat"><span class="small">隨機期望</span><strong>'+E.toFixed(1)+'</strong></div><div class="stat"><span class="small">對比期望</span><strong class="'+(T>=E?"pos":"neg")+'">'+(T-E>=0?"+":"")+(T-E).toFixed(1)+'</strong></div><div class="stat"><span class="small">統計期數</span><strong>'+res.length+'</strong></div></div>';
+  h+='<div class="rowb">'+(big.length?'<span class="chip nt">特別大獎 '+big.join("、")+'</span>':'')+(jp.length?'<span class="chip nt">金多寶 '+jp.join("、")+'</span>':'')+(rolls?'<span class="chip nt">頭獎無人中 '+rolls+' 期（只計有備註嘅期數）</span>':'')+'</div>';
+  h+='<div class="small"><strong>每期命中數</strong>（堆疊柱：沖／合／三合分開計）</div>';
+  h+='<div class="lg"><span><i style="background:var(--chong)"></i>六沖</span><span><i style="background:var(--he)"></i>六合</span><span><i style="background:var(--san)"></i>三合</span></div>';
+  h+=chart(res);
+  h+='<div class="ts" id="ts"><div id="tsi"></div></div><div class="tw" id="tw2"><table class="tbl2"><thead><tr><th>#</th><th>期數</th><th>開獎日</th><th>日柱</th><th>沖合號碼池</th><th>池大小</th><th>開獎號碼</th><th>單雙／和值</th><th>頭獎／金多寶</th><th>沖中</th><th>合中</th><th>三中</th><th>煞尾中</th><th>日肖中</th><th>年肖中</th><th>合計中左</th><th>隨機期望</th><th>對比期望</th></tr></thead><tbody>';
+  res.forEach(function(x,i){
+    var r=x.r,wd=WD[new Date(+r.date.slice(0,4),+r.date.slice(5,7)-1,+r.date.slice(8)).getDay()],odd=r.b.filter(function(n){return n%2}).length,sum=r.b.reduce(function(a,b){return a+b},0),df=x.all.length-x.exp;
+    function grp(l,c,a,k){return a.length?'<div class="gp"><b class="cl" style="color:var(--'+c+')">'+l+'</b>'+a.map(function(n){return B(n,{rg:k})}).join("")+'</div>':''}
+    function ball(n){var ip=x.P.all.indexOf(n)>-1;return B(n,{L:1,rg:ip?"g":"",ck:ip,dim:!ip})}
+    h+='<tr><td>'+(i+1)+'</td><td><strong>'+r.iss+'</strong></td><td>'+r.date+'（'+wd+'）</td><td><span class="pill">'+x.pl.txt+'</span> '+Z[x.pl.br]+'日</td>'
+    +'<td class="pc"><div class="balls" style="display:block">'+grp("沖","chong",x.P.c.n,"c")+grp("合","he",x.P.h.n,"h")+($("san").checked?grp("三","san",x.P.s.n,"s"):"")+'</div></td><td>'+x.P.all.length+'</td>'
+    +'<td><div class="balls" style="gap:6px;align-items:center;max-width:300px">'+r.b.map(ball).join("")+'<span class="sp"><span class="small">特</span>'+B(r.sp,{L:1,dim:1})+'</span></div></td>'
+    +'<td><strong style="color:var(--chong)">'+odd+'</strong>:<strong style="color:var(--b)">'+(6-odd)+'</strong><div class="small">'+sum+(sum<150?" 小":" 大")+'</div></td><td class="small">'+(r.note||"—")+'</td>'
+    +'<td class="num neg">'+x.c.length+'</td><td class="num pos">'+x.h.length+'</td><td class="num" style="color:var(--san)">'+x.s.length+'</td><td class="num">'+x.sha.length+'</td><td class="num">'+x.day.length+'</td><td class="num">'+x.yr.length+'</td><td class="num">'+x.all.length+'</td><td class="num small">'+x.exp.toFixed(1)+'</td><td class="num '+(df>=0?"pos":"neg")+'">'+(df>=0?"+":"")+df.toFixed(1)+'</td></tr>'});
+  h+='</tbody></table></div><p class="small">池大小視乎「加三合」及生肖年設定；歲煞尾：申子辰日煞南（2、7）、巳酉丑日煞東（3、8）、寅午戌日煞北（1、6）、亥卯未日煞西（4、9）。回測表同圖只計 6 個正選號碼（唔計特別號碼），隨機期望＝池大小 × 6 ÷ 49；上期結果卡嘅日肖／年肖／歲煞連特別號碼一齊計。</p>';
+  el.innerHTML=h;var a=$("ts"),t=$("tw2");$("tsi").style.width=t.scrollWidth+"px";a.onscroll=function(){t.scrollLeft=a.scrollLeft};t.onscroll=function(){a.scrollLeft=t.scrollLeft}}
+// init
+var ys="";for(var i=0;i<12;i++)ys+='<option value="'+i+'">'+Z[i]+'年</option>';$("year").innerHTML=ys;$("year").value=6;
+$("date").value=nextDraw();
+$("date").onchange=$("year").onchange=$("san").onchange=render;
+$("mode").onclick=function(e){var v=e.target.dataset.v;if(!v)return;mode=v;[].forEach.call(this.children,function(b){b.classList.toggle("on",b.dataset.v===v)});render()};
+$("win").onclick=function(e){var v=e.target.dataset.v;if(!v)return;win=+v;[].forEach.call(this.children,function(b){b.classList.toggle("on",b.dataset.v===v)});render()};
+$("run").onclick=function(){rows=parse();render()};
+$("data").value="26/121, 2026-11-15, 2 8 11 35 43 47, 48 | 頭獎無人中\n26/120, 2026-11-12, 20 24 33 37 42 46, 13\n26/119, 2026-11-10, 3 11 13 15 17 24, 19\n26/118, 2026-11-07, 11 14 17 21 22 29, 40\n26/117, 2026-11-05, 11 20 28 29 42 47, 46 | 特別大獎 $4,296萬\n26/116, 2026-10-31, 10 11 19 27 37 43, 8 | 萬聖節金多寶\n26/115, 2026-10-27, 2 4 18 21 24 47, 31\n26/114, 2026-10-24, 9 25 26 28 44 45, 20\n26/113, 2026-10-22, 4 11 12 16 38 48, 5\n26/112, 2026-10-20, 2 5 7 8 21 29, 31\n26/111, 2026-10-17, 3 13 27 29 30 40, 9 | 頭獎無人中\n26/110, 2026-10-15, 3 7 8 10 36 42, 20 | 頭獎無人中\n26/109, 2026-10-13, 3 5 9 17 21 26, 38 | 頭獎 $14,072,930\n26/108, 2026-10-10, 12 14 20 33 34 37, 31 | 頭獎無人中\n26/107, 2026-10-08, 18 19 24 31 40 44, 5 | 頭獎無人中\n26/106, 2026-10-06, 9 29 31 34 36 41, 28\n26/105, 2026-10-03, 8 23 29 31 34 43, 48 | 特別大獎 $3,414萬\n26/104, 2026-09-26, 4 28 31 44 47 48, 19 | 中秋金多寶｜頭獎無人中\n26/103, 2026-09-22, 2 34 35 43 45 46, 41 | 頭獎 $8,322,360\n26/102, 2026-09-19, 5 8 11 14 19 31, 21 | 頭獎 $12,493,490";rows=parse();render();
+fetch("draws.txt",{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.text()}).then(function(t){if(t.trim()){$("data").value=t.trim();rows=parse();render()}}).catch(function(){});
+})();
+</script>
+</body>
+</html>
