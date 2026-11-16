@@ -78,6 +78,8 @@ td .balls .n.L{width:34px;height:34px;font-size:13px}
 .pill{display:inline-block;background:#fbeeb8;color:#5b4300;border:1px solid #e8cf6a;border-radius:6px;padding:0 8px;font-weight:700}
 .pstat{font-size:12px;color:var(--mut);margin:2px 0 6px}.pstat strong{color:var(--ink)}
 .nx{display:flex;flex-wrap:wrap;gap:10px 32px;margin-top:6px}.nx div{display:flex;flex-direction:column}.nx strong{font-size:20px}
+.rcard{border:1px solid var(--ln);border-radius:10px;padding:12px 14px;margin:12px 0}.rcard .n.L{width:38px;height:38px;font-size:14px}
+.rb{min-width:500px}.rb .n.L{width:38px;height:38px;font-size:14px}.tbl2 td{vertical-align:top}.tbl2 td.num{vertical-align:middle}
 .disc{font-size:12px;color:var(--mut);border-top:1px solid var(--ln);padding-top:14px;margin-top:24px}
 </style>
 </head>
@@ -257,21 +259,26 @@ function heroStats(){
   if(!rows.length){ids.forEach(function(a){$(a[0]).textContent="輸入開獎資料後會顯示近期命中率"});return}
   var res=rows.slice(0,20).map(function(r,i){return calc(r,i)});
   ids.forEach(function(a){stat($(a[0]),res,a[1],a[2])})}
-function lastRes(){
-  var el=$("lastcard");
-  if(!rows.length){el.innerHTML='<h2>上期實際結果</h2><p class="small">喺下面輸入開獎資料後撳「分析」，就會顯示上期結果同命中分析。</p>';return}
-  var x=calc(rows[0],0),r=x.r;
+function rbody(x,top){
+  var r=x.r,sh=x.sg;
   function tg(n){var t="";if(x.D.indexOf(n)>-1)t+='<em class="tk d">日</em>';if(x.Y.indexOf(n)>-1)t+='<em class="tk y">年</em>';if(x.SN.indexOf(n)>-1)t+='<em class="tk s">煞</em>';return '<span class="tg">'+t+'</span>'}
   function ball(n){var on=x.P.all.indexOf(n)>-1||x.D.indexOf(n)>-1||x.Y.indexOf(n)>-1;return '<span class="bw">'+B(n,{L:1,rg:on?"g":"",ck:on,dim:!on})+tg(n)+'</span>'}
   function lst(a,sp){return a.length?a.map(function(n){return pad(n)+'('+(sp&&n===r.sp?'特':zo(n))+')'}).join(", "):"無"}
-  var sh=x.sg;
-  el.innerHTML='<div class="row"><h2 style="margin:0">上期 '+r.iss+'（'+r.date+'）實際結果</h2><span style="font-size:18px;font-weight:700">'+x.pl.txt+'日（'+Z[x.pl.br]+'）</span></div>'
-  +'<div class="rowb"><span class="chip g">沖合池中左 '+x.all.length+' 球</span><span class="chip c">沖中 '+x.c.length+'</span><span class="chip h">合中 '+x.h.length+'</span><span class="chip s">三合中 '+x.s.length+'</span><span class="chip d">日肖中 '+x.day7.length+'</span><span class="chip y">年肖中 '+x.yr7.length+'</span><span class="chip k">歲煞中 '+x.sha7.length+'</span></div>'
-  +'<div class="rowb">'+r.b.map(ball).join("")+'<span class="sp"><span class="small">特</span>'+ball(r.sp)+'</span></div>'
-  +'<div class="ln small">上期沖合池（'+x.P.all.length+' 個）：'+x.P.all.map(pad).join(", ")+'</div>'
+  return '<div class="rowb" style="margin-top:0">'+r.b.map(ball).join("")+'<span class="sp"><span class="small">特</span>'+ball(r.sp)+'</span></div>'
+  +'<div class="ln small">'+(top?'上期':'')+'沖合池（'+x.P.all.length+' 個）：'+x.P.all.map(pad).join(", ")+'</div>'
   +'<div class="ln"><span class="chip c">沖</span>中左：'+lst(x.c)+' <span class="chip h">合</span>中左：'+lst(x.h)+' <span class="chip s">三</span>中左：'+lst(x.s)+'</div>'
-  +'<div class="ln"><span class="chip d">日肖</span>'+Z[x.pl.br]+'日 中左：'+lst(x.day7)+' <span class="chip y">年肖</span>'+Z[yearOf()]+'年 中左：'+lst(x.yr7)+' <span class="chip k">歲煞</span>煞'+sh.d+'（尾 '+sh.t.join("、")+'）中左：'+lst(x.sha7,1)+'</div>'
-  +'<div class="ln small" style="margin-top:10px">球上標記：<em class="tk d">日</em> 當日生肖　<em class="tk y">年</em> 年生肖　<em class="tk s">煞</em> 歲煞尾數（三組各自獨立計；上方命中數連特別號碼一齊計）</div>'}
+  +'<div class="ln"><span class="chip d">日肖</span>'+Z[x.pl.br]+'日 中左：'+lst(x.day7)+' <span class="chip y">年肖</span>'+Z[yearOf()]+'年 中左：'+lst(x.yr7)+' <span class="chip k">歲煞</span>煞'+sh.d+'（尾 '+sh.t.join("、")+'）中左：'+lst(x.sha7,1)+'</div>'}
+function rc(x){
+  var r=x.r;
+  var odd=r.b.filter(function(n){return n%2}).length,sum=r.b.reduce(function(p,q){return p+q},0);
+  return '<div class="row"><h2 style="margin:0">上期 '+r.iss+'（'+r.date+'）實際結果</h2><span style="font-size:17px;font-weight:700">'+x.pl.txt+'日（'+Z[x.pl.br]+'）</span><span class="small">單雙 '+odd+':'+(6-odd)+' · 和值 '+sum+(sum<150?' 小':' 大')+(r.note?' · '+r.note:'')+'</span></div>'
+  +'<div class="rowb"><span class="chip g">沖合池中左 '+x.all.length+' 球</span><span class="chip c">沖中 '+x.c.length+'</span><span class="chip h">合中 '+x.h.length+'</span><span class="chip s">三合中 '+x.s.length+'</span><span class="chip d">日肖中 '+x.day7.length+'</span><span class="chip y">年肖中 '+x.yr7.length+'</span><span class="chip k">歲煞中 '+x.sha7.length+'</span></div>'
+  +rbody(x,true)}
+var LEGEND='<div class="ln small" style="margin-top:10px">球上標記：<em class="tk d">日</em> 當日生肖　<em class="tk y">年</em> 年生肖　<em class="tk s">煞</em> 歲煞尾數（三組各自獨立計；沖／合／三合命中只計 6 個正選號碼，日肖／年肖／歲煞連特別號碼一齊計）</div>';
+function lastRes(){
+  var el=$("lastcard");
+  if(!rows.length){el.innerHTML='<h2>上期實際結果</h2><p class="small">喺下面輸入開獎資料後撳「分析」，就會顯示上期結果同命中分析。</p>';return}
+  el.innerHTML=rc(calc(rows[0],0))+LEGEND}
 function chart(res){
   var n=res.length,W=54,L=30,T=24,PH=170,Bm=40,w=L+n*W+8,H=T+PH+Bm,mx=6;
   res.forEach(function(x){mx=Math.max(mx,x.all.length,Math.ceil(x.exp))});
@@ -306,17 +313,14 @@ function backtest(){
   h+='<div class="small"><strong>每期命中數</strong>（堆疊柱：沖／合／三合分開計）</div>';
   h+='<div class="lg"><span><i style="background:var(--chong)"></i>六沖</span><span><i style="background:var(--he)"></i>六合</span><span><i style="background:var(--san)"></i>三合</span></div>';
   h+=chart(res);
-  h+='<div class="ts" id="ts"><div id="tsi"></div></div><div class="tw" id="tw2"><table class="tbl2"><thead><tr><th>#</th><th>期數</th><th>開獎日</th><th>日柱</th><th>沖合號碼池</th><th>池大小</th><th>開獎號碼</th><th>單雙／和值</th><th>頭獎／金多寶</th><th>沖中</th><th>合中</th><th>三中</th><th>煞尾中</th><th>日肖中</th><th>年肖中</th><th>合計中左</th><th>隨機期望</th><th>對比期望</th></tr></thead><tbody>';
+  h+='<div class="ts" id="ts"><div id="tsi"></div></div><div class="tw" id="tw2"><table class="tbl2"><thead><tr><th>#</th><th>期數</th><th>開獎日</th><th>日柱</th><th>沖合號碼池／開獎號碼</th><th>單雙／和值</th><th>頭獎／金多寶</th><th>沖中</th><th>合中</th><th>三中</th><th>煞尾中</th><th>日肖中</th><th>年肖中</th><th>合計中左</th><th>隨機期望</th><th>對比期望</th></tr></thead><tbody>';
   res.forEach(function(x,i){
-    var r=x.r,wd=WD[new Date(+r.date.slice(0,4),+r.date.slice(5,7)-1,+r.date.slice(8)).getDay()],odd=r.b.filter(function(n){return n%2}).length,sum=r.b.reduce(function(a,b){return a+b},0),df=x.all.length-x.exp;
-    function grp(l,c,a,k){return a.length?'<div class="gp"><b class="cl" style="color:var(--'+c+')">'+l+'</b>'+a.map(function(n){return B(n,{rg:k})}).join("")+'</div>':''}
-    function ball(n){var ip=x.P.all.indexOf(n)>-1;return B(n,{L:1,rg:ip?"g":"",ck:ip,dim:!ip})}
-    h+='<tr><td>'+(i+1)+'</td><td><strong>'+r.iss+'</strong></td><td>'+r.date+'（'+wd+'）</td><td><span class="pill">'+x.pl.txt+'</span> '+Z[x.pl.br]+'日</td>'
-    +'<td class="pc"><div class="balls" style="display:block">'+grp("沖","chong",x.P.c.n,"c")+grp("合","he",x.P.h.n,"h")+($("san").checked?grp("三","san",x.P.s.n,"s"):"")+'</div></td><td>'+x.P.all.length+'</td>'
-    +'<td><div class="balls" style="gap:6px;align-items:center;max-width:300px">'+r.b.map(ball).join("")+'<span class="sp"><span class="small">特</span>'+B(r.sp,{L:1,dim:1})+'</span></div></td>'
+    var r=x.r,wd=WD[new Date(+r.date.slice(0,4),+r.date.slice(5,7)-1,+r.date.slice(8)).getDay()],odd=r.b.filter(function(n){return n%2}).length,sum=r.b.reduce(function(p,q){return p+q},0),df=x.all.length-x.exp;
+    h+='<tr><td>'+(i+1)+'</td><td><strong>'+r.iss+'</strong></td><td>'+r.date+'（'+wd+'）</td><td><span class="pill">'+x.pl.txt+'</span><div>'+Z[x.pl.br]+'日</div></td>'
+    +'<td class="rb">'+rbody(x)+'</td>'
     +'<td><strong style="color:var(--chong)">'+odd+'</strong>:<strong style="color:var(--b)">'+(6-odd)+'</strong><div class="small">'+sum+(sum<150?" 小":" 大")+'</div></td><td class="small">'+(r.note||"—")+'</td>'
     +'<td class="num neg">'+x.c.length+'</td><td class="num pos">'+x.h.length+'</td><td class="num" style="color:var(--san)">'+x.s.length+'</td><td class="num">'+x.sha.length+'</td><td class="num">'+x.day.length+'</td><td class="num">'+x.yr.length+'</td><td class="num">'+x.all.length+'</td><td class="num small">'+x.exp.toFixed(1)+'</td><td class="num '+(df>=0?"pos":"neg")+'">'+(df>=0?"+":"")+df.toFixed(1)+'</td></tr>'});
-  h+='</tbody></table></div><p class="small">池大小視乎「加三合」及生肖年設定；歲煞尾：申子辰日煞南（2、7）、巳酉丑日煞東（3、8）、寅午戌日煞北（1、6）、亥卯未日煞西（4、9）。回測表同圖只計 6 個正選號碼（唔計特別號碼），隨機期望＝池大小 × 6 ÷ 49；上期結果卡嘅日肖／年肖／歲煞連特別號碼一齊計。</p>';
+  h+='</tbody></table></div>'+LEGEND+'<p class="small">歲煞尾：申子辰日煞南（2、7）、巳酉丑日煞東（3、8）、寅午戌日煞北（1、6）、亥卯未日煞西（4、9）。池大小視乎「加三合」及生肖年設定。表入面嘅沖中／合中／三中／煞尾中／日肖中／年肖中只計 6 個正選號碼；隨機期望＝池大小 × 6 ÷ 49。</p>';
   el.innerHTML=h;var a=$("ts"),t=$("tw2");$("tsi").style.width=t.scrollWidth+"px";a.onscroll=function(){t.scrollLeft=a.scrollLeft};t.onscroll=function(){a.scrollLeft=t.scrollLeft}}
 // init
 var ys="";for(var i=0;i<12;i++)ys+='<option value="'+i+'">'+Z[i]+'年</option>';$("year").innerHTML=ys;$("year").value=6;
