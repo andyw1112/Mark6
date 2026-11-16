@@ -77,6 +77,7 @@ td .balls .n.L{width:34px;height:34px;font-size:13px}
 .tbl2{min-width:1340px}.tbl2 td.num{text-align:center;font-size:18px;font-weight:700}
 .pill{display:inline-block;background:#fbeeb8;color:#5b4300;border:1px solid #e8cf6a;border-radius:6px;padding:0 8px;font-weight:700}
 .pstat{font-size:12px;color:var(--mut);margin:2px 0 6px}.pstat strong{color:var(--ink)}
+.nx{display:flex;flex-wrap:wrap;gap:10px 32px;margin-top:6px}.nx div{display:flex;flex-direction:column}.nx strong{font-size:20px}
 .disc{font-size:12px;color:var(--mut);border-top:1px solid var(--ln);padding-top:14px;margin-top:24px}
 </style>
 </head>
@@ -84,6 +85,8 @@ td .balls .n.L{width:34px;height:34px;font-size:13px}
 <main class="wrap">
 <h1>六合彩生肖沖合</h1>
 <p class="sub">按開獎日日柱（或年肖、上期特別號碼）推算沖、合、三合生肖與號碼，再用你輸入的歷史開獎做回測。</p>
+
+<section class="card" id="nextcard" style="display:none"></section>
 
 <section class="card">
   <div class="row">
@@ -207,6 +210,13 @@ function render(){
   var g="";for(var n=1;n<=49;n++){var k=P.c.n.indexOf(n)>-1?"c":P.h.n.indexOf(n)>-1?"h":($("san").checked&&P.s.n.indexOf(n)>-1)?"s":"";
     g+='<div class="cell '+k+'"><span class="n '+col(n)+'">'+(n<10?"0"+n:n)+'</span>'+Z[mod(yearOf()-(n-1),12)]+'</div>'}
   $("g49").innerHTML=g;heroStats();backtest()}
+var NEXT={"issue": "26/122", "date": "2026-11-17", "cutoff": "21:15", "jackpot": 13000000, "snowball": 8000000, "snowballName": "多寶／金多寶", "updated": "2026-11-16"};
+function renderNext(n){
+  var el=$("nextcard");if(!n||!n.issue){el.style.display="none";return}
+  var d=n.date||"",wd=d?"（"+WD[new Date(+d.slice(0,4),+d.slice(5,7)-1,+d.slice(8)).getDay()]+"）":"";
+  var money=function(v){return v==null?"待更新":"$"+Number(v).toLocaleString("en-US")};
+  el.style.display="";
+  el.innerHTML='<div class="small" style="color:var(--san)">下期攪珠</div><div class="nx"><div><span class="small">期數</span><strong>'+n.issue+'</strong></div><div><span class="small">攪珠日期</span><strong>'+d+wd+'</strong></div><div><span class="small">截止售票</span><strong>'+(n.cutoff||"21:15")+'</strong></div><div><span class="small">預計頭獎</span><strong>'+money(n.jackpot)+'</strong></div>'+(n.snowball?'<div><span class="small">'+(n.snowballName||"多寶／金多寶")+'</span><strong>'+money(n.snowball)+'</strong></div>':'')+'</div>'+(n.updated?'<div class="small" style="margin-top:6px">資料更新：'+n.updated+'（獎金為預計金額，以馬會公佈為準）</div>':'')}
 function pad(n){return n<10?"0"+n:""+n}
 var WD="日一二三四五六";
 function shaOf(b){return [8,0,4].indexOf(b)>-1?{d:"南",t:[2,7]}:[5,9,1].indexOf(b)>-1?{d:"東",t:[3,8]}:[2,6,10].indexOf(b)>-1?{d:"北",t:[1,6]}:{d:"西",t:[4,9]}}
@@ -215,7 +225,7 @@ function zo(n){return Z[mod(yearOf()-(n-1),12)]}
 function parse(){
   var out=[],bad=0;
   $("data").value.split(/\n/).forEach(function(line){
-    if(!line.trim())return;
+    if(!line.trim()||/^\s*#/.test(line))return;
     var parts=line.split("|"),note=parts.slice(1).join("｜").trim();line=parts[0];
     var d=line.match(/(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
     var rest=line.replace(/\d{4}[-\/]\d{1,2}[-\/]\d{1,2}/,"").replace(/^\s*\d{2}\/\d{2,3}\s*[,，\s]/,"");
@@ -315,8 +325,8 @@ $("date").onchange=$("year").onchange=$("san").onchange=render;
 $("mode").onclick=function(e){var v=e.target.dataset.v;if(!v)return;mode=v;[].forEach.call(this.children,function(b){b.classList.toggle("on",b.dataset.v===v)});render()};
 $("win").onclick=function(e){var v=e.target.dataset.v;if(!v)return;win=+v;[].forEach.call(this.children,function(b){b.classList.toggle("on",b.dataset.v===v)});render()};
 $("run").onclick=function(){rows=parse();render()};
-$("data").value="26/121, 2026-11-15, 2 8 11 35 43 47, 48 | 頭獎無人中\n26/120, 2026-11-12, 20 24 33 37 42 46, 13\n26/119, 2026-11-10, 3 11 13 15 17 24, 19\n26/118, 2026-11-07, 11 14 17 21 22 29, 40\n26/117, 2026-11-05, 11 20 28 29 42 47, 46 | 特別大獎 $4,296萬\n26/116, 2026-10-31, 10 11 19 27 37 43, 8 | 萬聖節金多寶\n26/115, 2026-10-27, 2 4 18 21 24 47, 31\n26/114, 2026-10-24, 9 25 26 28 44 45, 20\n26/113, 2026-10-22, 4 11 12 16 38 48, 5\n26/112, 2026-10-20, 2 5 7 8 21 29, 31\n26/111, 2026-10-17, 3 13 27 29 30 40, 9 | 頭獎無人中\n26/110, 2026-10-15, 3 7 8 10 36 42, 20 | 頭獎無人中\n26/109, 2026-10-13, 3 5 9 17 21 26, 38 | 頭獎 $14,072,930\n26/108, 2026-10-10, 12 14 20 33 34 37, 31 | 頭獎無人中\n26/107, 2026-10-08, 18 19 24 31 40 44, 5 | 頭獎無人中\n26/106, 2026-10-06, 9 29 31 34 36 41, 28\n26/105, 2026-10-03, 8 23 29 31 34 43, 48 | 特別大獎 $3,414萬\n26/104, 2026-09-26, 4 28 31 44 47 48, 19 | 中秋金多寶｜頭獎無人中\n26/103, 2026-09-22, 2 34 35 43 45 46, 41 | 頭獎 $8,322,360\n26/102, 2026-09-19, 5 8 11 14 19 31, 21 | 頭獎 $12,493,490";rows=parse();render();
-fetch("draws.txt",{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.text()}).then(function(t){if(t.trim()){$("data").value=t.trim();rows=parse();render()}}).catch(function(){});
+$("data").value="26/121, 2026-11-15, 2 8 11 35 43 47, 48 | 頭獎無人中\n26/120, 2026-11-12, 20 24 33 37 42 46, 13\n26/119, 2026-11-10, 3 11 13 15 17 24, 19\n26/118, 2026-11-07, 11 14 17 21 22 29, 40\n26/117, 2026-11-05, 11 20 28 29 42 47, 46 | 特別大獎 $4,296萬\n26/116, 2026-10-31, 10 11 19 27 37 43, 8 | 萬聖節金多寶\n26/115, 2026-10-27, 2 4 18 21 24 47, 31\n26/114, 2026-10-24, 9 25 26 28 44 45, 20\n26/113, 2026-10-22, 4 11 12 16 38 48, 5\n26/112, 2026-10-20, 2 5 7 8 21 29, 31\n26/111, 2026-10-17, 3 13 27 29 30 40, 9 | 頭獎無人中\n26/110, 2026-10-15, 3 7 8 10 36 42, 20 | 頭獎無人中\n26/109, 2026-10-13, 3 5 9 17 21 26, 38 | 頭獎 $14,072,930\n26/108, 2026-10-10, 12 14 20 33 34 37, 31 | 頭獎無人中\n26/107, 2026-10-08, 18 19 24 31 40 44, 5 | 頭獎無人中\n26/106, 2026-10-06, 9 29 31 34 36 41, 28\n26/105, 2026-10-03, 8 23 29 31 34 43, 48 | 特別大獎 $3,414萬\n26/104, 2026-09-26, 4 28 31 44 47 48, 19 | 中秋金多寶｜頭獎無人中\n26/103, 2026-09-22, 2 34 35 43 45 46, 41 | 頭獎 $8,322,360\n26/102, 2026-09-19, 5 8 11 14 19 31, 21 | 頭獎 $12,493,490";rows=parse();renderNext(NEXT);if(NEXT.date>=nextDraw().slice(0,0)+new Date().toISOString().slice(0,10))$("date").value=NEXT.date;render();
+fetch("draws.txt",{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.text()}).then(function(t){if(t.trim()){$("data").value=t.trim();rows=parse();var m=t.match(/^#\s*next\s*(\{.*\})\s*$/m);if(m){try{var nx=JSON.parse(m[1]);renderNext(nx);if(nx.date)$("date").value=nx.date}catch(e){}}render()}}).catch(function(){});
 })();
 </script>
 </body>
