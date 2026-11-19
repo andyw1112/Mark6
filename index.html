@@ -119,7 +119,7 @@ td .balls .n.L{width:34px;height:34px;font-size:13px}
 .cdl.cd-A{background:#6b5bd2}.cdl.cd-B{background:#d2691e}.cdl.cd-C{background:#2e8b57}.cdl.cd-D{background:#1f78b4}.cdl.cd-E{background:#8a6d3b}
 span.cd-A{color:#6b5bd2}span.cd-B{color:#d2691e}span.cd-C{color:#2e8b57}span.cd-D{color:#1f78b4}span.cd-E{color:#8a6d3b}
 .pcd span,.cdbox span[class^="cd-"]{font-weight:800;margin-right:2px}.cdov{color:var(--chong)!important;text-decoration:underline}
-.cdbox{border:1px dashed var(--ln);border-radius:8px;padding:6px 8px;margin:8px 0;font-size:13px}
+.cdwarn{color:var(--chong);font-weight:700;margin-top:2px}.cdbox{border:1px dashed var(--ln);border-radius:8px;padding:6px 8px;margin:8px 0;font-size:13px}
 .disc{font-size:12px;color:var(--mut);border-top:1px solid var(--ln);padding-top:14px;margin-top:24px}
 </style>
 </head>
@@ -360,8 +360,6 @@ function saveSel(){try{localStorage.setItem("m6sel",JSON.stringify(SEL))}catch(e
 function setSel(n,m){n=+n;if(!(n>=1&&n<=49))return;
   if(m===undefined)m=SEL[n]===PMODE?null:PMODE;
   if(m==="b"&&SEL[n]!=="b"&&Object.keys(SEL).filter(function(k){return SEL[k]==="b"}).length>=5){$("pkmsg").textContent="膽最多 5 個";return}
-  if(m&&!SEL[n]){var same=Object.keys(SEL).filter(function(k){return cd(+k)===cd(n)});
-    if(same.length>=CDMAX){$("pkmsg").textContent="代號 "+cd(n)+" 已經揀咗 "+CDMAX+" 個（"+same.map(function(k){return pad(+k)}).join("、")+"），唔可以再揀 "+pad(n);return}}
   if(m)SEL[n]=m;else delete SEL[n];saveSel();renderPick()}
 function combs(a,k){var o=[],c=[];(function r(i){if(c.length===k){o.push(c.slice());return}for(var j=i;j<a.length;j++){c.push(a[j]);r(j+1);c.pop()}})(0);return o}
 function gcnt(t){return GRP.map(function(G){return t.filter(function(n){return G.in(n,HC)}).length})}
@@ -398,7 +396,9 @@ function renderPick(){
     var bd={};bets.forEach(function(t){var m=cdmax(t);bd[m]=(bd[m]||0)+1});
     var fmt=function(d,tot){return Object.keys(d).map(Number).sort().map(function(m){return '<span class="'+(m>CDMAX?'cdov':'')+'">最多 '+m+' 個同代號 ×'+d[m]+(tot?'（'+(d[m]/tot*100).toFixed(0)+'%）':'')+'</span>'}).join("　")};
     h+='<div class="cdbox"><strong>代號</strong>（1=A 2=B 3=C 4=D 5=E 6=A…）揀咗：'+cdstr(all)
-      +'<div class="small">規則：同一代號最多 '+CDMAX+' 個（再揀第 '+(CDMAX+1)+' 個會擋住）</div>'
+      +(function(){var c=cdc(all),ov=CDS.split("").filter(function(k){return c[k]>CDMAX});
+        return ov.length?'<div class="cdwarn">⚠ '+ov.map(function(k){return '代號 '+k+' 揀咗 '+c[k]+' 個（'+all.filter(function(n){return cd(n)===k}).sort(function(a,b){return a-b}).map(pad).join("、")+'）'}).join("；")+'，通常同一代號最多 '+CDMAX+' 個</div>'
+          :'<div class="small">✓ 每個代號都冇超過 '+CDMAX+' 個（通常最多 '+CDMAX+' 個）</div>'})()
       +(bets.length?'<div class="small">每注：'+fmt(bd,bets.length)+'</div>':'')
       +(HRES.length?'<div class="small">近 '+HRES.length+' 期實際（6 正選）：'+fmt(hd,HRES.length)+'</div>':'')+'</div>';
   }
