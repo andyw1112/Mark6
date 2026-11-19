@@ -241,13 +241,13 @@ function render(){
   var g="";for(var n=1;n<=49;n++){var k=P.c.n.indexOf(n)>-1?"c":P.h.n.indexOf(n)>-1?"h":($("san").checked&&P.s.n.indexOf(n)>-1)?"s":"";
     g+='<div class="cell '+k+'"><span class="n '+col(n)+'">'+(n<10?"0"+n:n)+mkb(n)+'</span>'+Z[mod(yearOf()-(n-1),12)]+(wxc(n)==="w"?'<span class="wxl nw">尾生頭</span>':wxc(n)==="t"?'<span class="wxl nt2">頭生尾</span>':'')+'</div>'}
   $("g49").innerHTML=g;heroStats();backtest()}
-var NEXT={"issue": "26/123", "date": "2026-11-19", "cutoff": "21:15", "jackpot": 19000000, "snowball": 13283302, "snowballName": "多寶／金多寶", "updated": "2026-11-18"};
+var NEXT={"issue": "26/124", "date": "2026-11-24", "cutoff": "21:15", "jackpot": 68000000, "snowball": 50000000, "snowballName": "幸運二金多寶", "note": "集氣加碼：按 11-23 下午 2 時累積投注額定。不足 6,000 萬→金多寶 5,000 萬／頭獎 6,800 萬；6,000–7,000 萬→5,500 萬／7,300 萬；7,000 萬或以上→6,000 萬／8,000 萬。11-21（六）停攪一次。", "manual": true, "updated": "2026-11-19"};
 function renderNext(n){
   var el=$("nextcard");if(!n||!n.issue){el.style.display="none";return}
   var d=n.date||"",wd=d?"（"+WD[new Date(+d.slice(0,4),+d.slice(5,7)-1,+d.slice(8)).getDay()]+"）":"";
   var money=function(v){return v==null?"待更新":"$"+Number(v).toLocaleString("en-US")};
   el.style.display="";
-  el.innerHTML='<div class="small" style="color:var(--san)">下期攪珠</div><div class="nx"><div><span class="small">期數</span><strong>'+n.issue+'</strong></div><div><span class="small">攪珠日期</span><strong>'+d+wd+'</strong></div><div><span class="small">截止售票</span><strong>'+(n.cutoff||"21:15")+'</strong></div><div><span class="small">預計頭獎</span><strong>'+money(n.jackpot)+'</strong></div>'+(n.snowball?'<div><span class="small">'+(n.snowballName||"多寶／金多寶")+'</span><strong>'+money(n.snowball)+'</strong></div>':'')+'</div>'+(n.updated?'<div class="small" style="margin-top:6px">資料更新：'+n.updated+'（獎金為預計金額，以馬會公佈為準）</div>':'')}
+  el.innerHTML='<div class="small" style="color:var(--san)">下期攪珠</div><div class="nx"><div><span class="small">期數</span><strong>'+n.issue+'</strong></div><div><span class="small">攪珠日期</span><strong>'+d+wd+'</strong></div><div><span class="small">截止售票</span><strong>'+(n.cutoff||"21:15")+'</strong></div><div><span class="small">預計頭獎</span><strong>'+money(n.jackpot)+'</strong></div>'+(n.snowball?'<div><span class="small">'+(n.snowballName||"多寶／金多寶")+'</span><strong>'+money(n.snowball)+'</strong></div>':'')+'</div>'+(n.note?'<div class="small" style="margin-top:6px;color:var(--ink)">'+n.note+'</div>':'')+(n.updated?'<div class="small" style="margin-top:6px">資料更新：'+n.updated+'（獎金為預計金額，以馬會公佈為準）</div>':'')}
 function pad(n){return n<10?"0"+n:""+n}
 var WD="日一二三四五六";
 function shaOf(b){return [8,0,4].indexOf(b)>-1?{d:"南",t:[2,7]}:[5,9,1].indexOf(b)>-1?{d:"東",t:[3,8]}:[2,6,10].indexOf(b)>-1?{d:"北",t:[1,6]}:{d:"西",t:[4,9]}}

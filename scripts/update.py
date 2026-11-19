@@ -139,6 +139,10 @@ def computed_next(lines):
 
 def build_next(lines, prev):
     nxt = computed_next(lines)
+    # 人手改過嘅下期資料（"manual": true）：同一期就照留，唔好用推算日期覆蓋（例如金多寶改期、停攪）
+    if prev and prev.get("manual") and prev.get("issue") == nxt["issue"]:
+        print("keeping manual next-draw info:", prev)
+        return prev
     m = re.match(r"\s*(\d{2})/(\d{2,3})", lines[0])
     try:
         got = fetch_next_hkjc((int(m.group(1)), int(m.group(2))))
