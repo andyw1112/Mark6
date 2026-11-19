@@ -306,7 +306,8 @@ function lab(n,c){
   if(g2){p.push(g2+wt);used=!!wt}
   if(ss){p.push("煞"+(used?"":wt));if(wt)used=true}
   if(wt&&!used)p.push(wt);
-  return{t:p.join("+"),k:p.length}}
+  /* k＝涉及幾多組（沖合／日年／煞／尾頭）：年頭、日尾、煞尾 本身已經係 2 組組合 */
+  return{t:p.join("+"),k:(g1?1:0)+((dd||yy)?1:0)+(ss?1:0)+(wt?1:0)}}
 function ctxOf(x){return{c:x.P.c.n,h:x.P.h.n,s:$("san").checked?x.P.s.n:[],D:x.D,Y:x.Y,S:x.SN}}
 var GRP=[
  {id:1,nm:"沖＋六合＋三合",gc:"var(--chong)",rg:[3,4],tip:"通常 3–4 個",in:function(n,c){return c.c.indexOf(n)>-1||c.h.indexOf(n)>-1||c.s.indexOf(n)>-1}},
