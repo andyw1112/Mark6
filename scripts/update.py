@@ -9,7 +9,7 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 DATA = Path(__file__).resolve().parent.parent / "draws.txt"
-KEEP = 40
+KEEP = None   # None = 保留全部歷史（2017 起）；想限制就改做數字
 UA = {"User-Agent": "Mozilla/5.0 (compatible; mark6-updater/1.0)"}
 
 QUERY = """query marksixResult($lastNDraw: Int, $drawType: LotteryDrawType) {
@@ -78,7 +78,9 @@ def merge(existing_lines, new):
     def key(ln):
         m = re.search(r"\d{4}-\d{2}-\d{2}", ln)
         return m.group(0) if m else ""
-    lines = sorted(have.values(), key=key, reverse=True)[:KEEP]
+    lines = sorted(have.values(), key=key, reverse=True)
+    if KEEP:
+        lines = lines[:KEEP]
     return lines, added
 
 
