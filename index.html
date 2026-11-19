@@ -88,6 +88,31 @@ td .balls .n.L{width:34px;height:34px;font-size:13px}
 .mk{position:absolute;left:-7px;width:16px;height:16px;border-radius:50%;font:900 11px/16px sans-serif;text-align:center;text-decoration:none;z-index:1;box-shadow:0 0 0 1px var(--sf)}
 .mk.st{top:-7px;background:#ffd21f;color:#7a4b00}.mk.x{bottom:-7px;background:#111;color:#ff5a4a}
 .mkt{font-weight:900}.mkt.st{color:#d49a00}.mkt.x{color:#e0392b}
+.hero{row-gap:14px}
+.grps{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media(max-width:900px){.grps{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;-webkit-overflow-scrolling:touch}.grp{flex:0 0 82%;max-width:300px;scroll-snap-align:start}}
+.grp{border:1px solid var(--ln);border-top:4px solid var(--gc);border-radius:10px;padding:10px 10px 12px;background:var(--sf);min-width:0}
+.grp h3{margin:0;font-size:16px;color:var(--gc)}.grp .tip{font-size:12px;color:var(--mut);margin:0 0 6px}
+.gsub{margin:6px 0 2px;font-size:12px}.gsub .tag{font-size:12px;padding:0 6px}
+.gb{display:flex;flex-wrap:wrap;gap:8px 4px;margin-top:4px}
+.gb .bw{width:36px;gap:2px}.gb .n{width:28px;height:28px;font-size:12px}
+.cbl{font:700 9.5px/1.15 sans-serif;color:var(--ink);text-align:center;white-space:nowrap;letter-spacing:-.02em}
+.gst{font-size:12px;color:var(--mut);border-top:1px dashed var(--ln);margin-top:8px;padding-top:6px}.gst strong{color:var(--ink)}
+.cmn{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}.cmn span{border:1px solid var(--ln);border-radius:99px;padding:0 7px;font-size:12px;white-space:nowrap;color:var(--ink)}.cmn span i{font-style:normal;color:var(--mut)}
+.pick{grid-column:1/-1;min-width:0;border:1px solid var(--ln);border-top:4px solid var(--gold);border-radius:10px;padding:12px}
+.pick h3{margin:0 0 2px;font-size:17px}
+.dz{display:flex;flex-wrap:wrap;align-items:flex-start;gap:6px 4px;min-height:58px;border:2px dashed var(--ln);border-radius:8px;padding:8px;margin-top:8px}.dz>b{width:100%;font-size:13px}.dz.ovr{border-color:var(--gold);background:rgba(242,194,48,.1)}
+.dz .bw{width:38px}.dz .n{width:30px;height:30px;font-size:12px}
+.pg{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;margin-top:10px;justify-items:center}@media(max-width:480px){.pg{grid-template-columns:repeat(7,1fr)}}
+.pg .n{width:32px;height:32px;cursor:pointer;font-size:12px}
+.n.pb{box-shadow:0 0 0 2px var(--sf),0 0 0 5px var(--gold)}.n.pl{box-shadow:0 0 0 2px var(--sf),0 0 0 5px var(--ink)}
+.pg .n.pb::after{content:"膽";position:absolute;bottom:-9px;right:-7px;font:700 9px/13px sans-serif;background:var(--gold);color:#3a2d00;border-radius:3px;padding:0 2px}
+.grp .bw{cursor:pointer}
+.pres{margin-top:12px;border-top:1px dashed var(--ln);padding-top:10px}.pnote{margin-bottom:8px}
+.psum{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}@media(max-width:720px){.psum{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.ps{border:1px solid var(--ln);border-left:4px solid var(--gc);border-radius:8px;padding:6px 8px}.psh{font-weight:700;color:var(--gc);font-size:14px}.psn{font-size:13px}.psn strong{font-size:18px}.psd{font-size:13px;margin-top:2px}.psd span{margin-right:6px;white-space:nowrap}
+.okk{color:var(--he);font-weight:700}.ov{color:var(--chong);font-weight:700}
+.ptb{min-width:560px;margin-top:6px}.ptb td.pn{white-space:nowrap}.ptb .n{display:inline-grid;width:24px;height:24px;font-size:11px;margin-right:2px}.ptb td.num{text-align:center;font-weight:700}
 .disc{font-size:12px;color:var(--mut);border-top:1px solid var(--ln);padding-top:14px;margin-top:24px}
 </style>
 </head>
@@ -118,16 +143,10 @@ td .balls .n.L{width:34px;height:34px;font-size:13px}
     <div class="small" id="dlabel"></div>
     <div class="pillar" id="pillar"></div>
     <div class="small" id="basenote"></div>
-    <div class="small">號碼外圈：<span class="nw">玫瑰色＝尾生頭</span>、<span class="nt2">啡金色＝頭生尾</span>　<span class="mkt st">★</span>＝日肖＋尾生頭 或 年肖＋頭生尾　<span class="mkt x">✕</span>＝歲煞＋尾生頭</div>
-    <div class="pool"><span class="tag t-c">沖</span><b id="cz"></b><span class="small" id="cc"></span><div class="balls" id="cb"></div><div class="pstat" id="st_c"></div></div>
-    <div class="pool"><span class="tag t-h">合</span><b id="hz"></b><span class="small" id="hc"></span><div class="balls" id="hb"></div><div class="pstat" id="st_h"></div></div>
-    <div class="pool" id="sanrow"><span class="tag t-s">三合</span><b id="sz"></b><span class="small" id="sc"></span><div class="balls" id="sb"></div><div class="pstat" id="st_s"></div>
-    <div class="pool"><span class="tag t-d">日肖</span><b id="dz"></b><span class="small" id="dc"></span><div class="balls" id="db"></div><div class="pstat" id="st_d"></div></div>
-    <div class="pool"><span class="tag t-y">年肖</span><b id="yz"></b><span class="small" id="yc"></span><div class="balls" id="yb"></div><div class="pstat" id="st_y"></div></div>
-    <div class="pool"><span class="tag t-k">歲煞</span><b id="kz"></b><span class="small" id="kc"></span><div class="balls" id="kb"></div><div class="pstat" id="st_k"></div></div>
-    <div class="pool"><span class="tag t-w">尾生頭</span><b id="wz"></b><span class="small" id="wc"></span><div class="balls" id="wb"></div><div class="pstat" id="st_w"></div></div>
-    <div class="pool"><span class="tag t-t">頭生尾</span><b id="tz"></b><span class="small" id="tc"></span><div class="balls" id="tb"></div><div class="pstat" id="st_t"></div></div></div>
+    <div class="small">球下面細字＝該號碼嘅組合（例：沖+煞、沖+年頭、日尾）。號碼外圈：<span class="nw">玫瑰色＝尾生頭</span>、<span class="nt2">啡金色＝頭生尾</span>　<span class="mkt st">★</span>＝日肖＋尾生頭 或 年肖＋頭生尾　<span class="mkt x">✕</span>＝歲煞＋尾生頭</div>
   </div>
+  <div class="grps" id="grps"></div>
+  <div class="pick" id="pick"></div>
 </section>
 
 <section class="card" id="lastcard"></section>
@@ -212,17 +231,7 @@ function render(){
   var B=baseFor(ds),P=pools(B.b,yearOf(),$("san").checked);
   (function(){var y=yearOf(),g=shaOf(B.p.br),S=[];for(var q=1;q<=49;q++)if(g.t.indexOf(q%10)>-1)S.push(q);CUR={D:nums(B.p.br,y),Y:nums(y,y),S:S}})();
   $("dlabel").textContent=ds+" 日柱";$("pillar").textContent=B.p.txt+"日";$("basenote").textContent=B.note;
-  $("cz").textContent=zn(P.c.z);$("cc").textContent=P.c.n.length+" 個";$("cb").innerHTML=balls(P.c.n);
-  $("hz").textContent=zn(P.h.z);$("hc").textContent=P.h.n.length+" 個";$("hb").innerHTML=balls(P.h.n);
-  $("sanrow").style.display=$("san").checked?"":"none";
-  $("sz").textContent=zn(P.s.z);$("sc").textContent=P.s.n.length+" 個";$("sb").innerHTML=balls(P.s.n);
-  var yb0=yearOf(),Dn=nums(B.p.br,yb0),Yn=nums(yb0,yb0),sg=shaOf(B.p.br),Kn=[];
-  for(var q=1;q<=49;q++)if(sg.t.indexOf(q%10)>-1)Kn.push(q);
-  $("dz").textContent=Z[B.p.br]+"日";$("dc").textContent=Dn.length+" 個";$("db").innerHTML=balls(Dn);
-  $("yz").textContent=Z[yb0]+"年";$("yc").textContent=Yn.length+" 個";$("yb").innerHTML=balls(Yn);
-  $("wz").textContent="字尾生字頭";$("wc").textContent=WSN.length+" 個";$("wb").innerHTML=balls(WSN);
-  $("tz").textContent="字頭生字尾";$("tc").textContent=TSN.length+" 個";$("tb").innerHTML=balls(TSN);
-  $("kz").textContent="煞"+sg.d+"（尾 "+sg.t.join("、")+"）";$("kc").textContent=Kn.length+" 個";$("kb").innerHTML=balls(Kn);
+  HP=P;
   ring(B.b,P);
   var g="";for(var n=1;n<=49;n++){var k=P.c.n.indexOf(n)>-1?"c":P.h.n.indexOf(n)>-1?"h":($("san").checked&&P.s.n.indexOf(n)>-1)?"s":"";
     g+='<div class="cell '+k+'"><span class="n '+col(n)+'">'+(n<10?"0"+n:n)+mkb(n)+'</span>'+Z[mod(yearOf()-(n-1),12)]+(wxc(n)==="w"?'<span class="wxl nw">尾生頭</span>':wxc(n)==="t"?'<span class="wxl nt2">頭生尾</span>':'')+'</div>'}
@@ -282,11 +291,105 @@ function stat(el,res,key,pf){
   var n=res.length,played=0,sum=0,bp=0,be=0;
   res.forEach(function(x){var k=pf(x).length,h=x[key].length;if(h>0)played++;sum+=h;bp+=p1(k);be+=k*6/49});
   el.innerHTML='近 '+n+' 期有中 <strong>'+played+'/'+n+'（'+(played/n*100).toFixed(0)+'%）</strong> · 平均 <strong>'+(sum/n).toFixed(2)+'</strong> 個／期 · 隨機基準 '+(bp/n*100).toFixed(0)+'%，'+(be/n).toFixed(2)+' 個／期'}
+var HP=null;
+/* 每個號碼嘅組合標籤：沖/合/三 ＋ 日/年(+尾/頭) ＋ 煞(+尾/頭) */
+function lab(n,c){
+  var g1=c.c.indexOf(n)>-1?"沖":c.h.indexOf(n)>-1?"合":c.s.indexOf(n)>-1?"三合":"",
+      dd=c.D.indexOf(n)>-1,yy=c.Y.indexOf(n)>-1,ss=c.S.indexOf(n)>-1,w=wxc(n),wt=w==="w"?"尾":w==="t"?"頭":"",p=[];
+  if(g1)p.push(g1);
+  var g2=(dd?"日":"")+(yy?"年":""),used=false;
+  if(g2){p.push(g2+wt);used=!!wt}
+  if(ss){p.push("煞"+(used?"":wt));if(wt)used=true}
+  if(wt&&!used)p.push(wt);
+  return{t:p.join("+"),k:p.length}}
+function ctxOf(x){return{c:x.P.c.n,h:x.P.h.n,s:$("san").checked?x.P.s.n:[],D:x.D,Y:x.Y,S:x.SN}}
+var GRP=[
+ {id:1,nm:"沖＋六合＋三合",gc:"var(--chong)",rg:[3,4],tip:"通常 3–4 個",in:function(n,c){return c.c.indexOf(n)>-1||c.h.indexOf(n)>-1||c.s.indexOf(n)>-1}},
+ {id:2,nm:"日肖＋年肖",gc:"#3b7be0",rg:[1,1],tip:"通常 1 個",in:function(n,c){return c.D.indexOf(n)>-1||c.Y.indexOf(n)>-1}},
+ {id:3,nm:"歲煞",gc:"#3a9a78",rg:[1,1],tip:"通常 1 個",in:function(n,c){return c.S.indexOf(n)>-1}},
+ {id:4,nm:"尾生頭＋頭生尾",gc:"#d1477a",rg:[3,4],tip:"通常 3–4 個",in:function(n){return !!wxc(n)}}];
 function heroStats(){
-  var ids=[["st_c","c",function(x){return x.P.c.n}],["st_h","h",function(x){return x.P.h.n}],["st_s","s",function(x){return x.P.s.n}],["st_d","day",function(x){return x.D}],["st_y","yr",function(x){return x.Y}],["st_k","sha",function(x){return x.SN}],["st_w","ws",function(){return WSN}],["st_t","ts",function(){return TSN}]];
-  if(!rows.length){ids.forEach(function(a){$(a[0]).textContent="輸入開獎資料後會顯示近期命中率"});return}
+  var el=$("grps");if(!HP){el.innerHTML="";return}
+  var ds=$("date").value,B0=baseFor(ds),yb=yearOf(),sg=shaOf(B0.p.br),S=[];for(var q=1;q<=49;q++)if(sg.t.indexOf(q%10)>-1)S.push(q);
+  var C={c:HP.c.n,h:HP.h.n,s:$("san").checked?HP.s.n:[],D:nums(B0.p.br,yb),Y:nums(yb,yb),S:S};
   var res=rows.slice(0,20).map(function(r,i){return calc(r,i)});
-  ids.forEach(function(a){stat($(a[0]),res,a[1],a[2])})}
+  HC=C;GMAX=GRP.map(function(G){var m=0;res.forEach(function(x){var c=ctxOf(x),k=x.r.b.filter(function(n){return G.in(n,c)}).length;if(k>m)m=k});return res.length?m:null});
+  function bl(arr){return '<div class="gb">'+arr.map(function(n){var L=lab(n,C),w=wxc(n);return '<span class="bw" draggable="true" data-pk="'+n+'">'+'<span class="n '+col(n)+(w?' wx-'+w:'')+'">'+pad(n)+mkb(n,C)+'</span><span class="cbl">'+(L.k>1?L.t.split("+").join("<br>"):"&nbsp;")+'</span></span>'}).join("")+'</div>'}
+  function sub(tag,cls,name,arr){return '<div class="gsub"><span class="tag '+cls+'">'+tag+'</span><b>'+name+'</b> <span class="small">'+arr.length+' 個</span></div>'+bl(arr)}
+  var body={
+   1:sub("沖","t-c",zn(HP.c.z),HP.c.n)+sub("合","t-h",zn(HP.h.z),HP.h.n)+($("san").checked?sub("三合","t-s",zn(HP.s.z),HP.s.n):""),
+   2:sub("日肖","t-d",Z[B0.p.br]+"日",C.D)+sub("年肖","t-y",Z[yb]+"年",C.Y),
+   3:sub("歲煞","t-k","煞"+sg.d+"（尾 "+sg.t.join("、")+"）",S),
+   4:sub("尾生頭","t-w","字尾生字頭",WSN)+sub("頭生尾","t-t","字頭生字尾",TSN)};
+  el.innerHTML=GRP.map(function(G){
+    var st="";
+    if(res.length){
+      var cnt=[],sum=0,ex=0,cm={},solo=0;
+      res.forEach(function(x){var c=ctxOf(x),k=x.r.b.filter(function(n){return G.in(n,c)}).length,pool=0;for(var n=1;n<=49;n++)if(G.in(n,c))pool++;
+        cnt[k]=(cnt[k]||0)+1;sum+=k;ex+=pool*6/49;
+        x.d.forEach(function(n){if(!G.in(n,c))return;var L=lab(n,c);if(L.k>1)cm[L.t]=(cm[L.t]||0)+1;else solo++})});
+      var dist=[];for(var i=0;i<cnt.length;i++)if(cnt[i])dist.push(i+"個×"+cnt[i]);
+      var top=Object.keys(cm).filter(function(t){return cm[t]>2}).sort(function(a,b){return cm[b]-cm[a]});
+      st='<div class="gst">近 '+res.length+' 期平均 <strong>'+(sum/res.length).toFixed(2)+'</strong> 個（隨機 '+(ex/res.length).toFixed(2)+'）<br>'+dist.join("　")
+        +'<div style="margin-top:6px"><strong>常見組合</strong>（近 20 期出現多過 2 次，連特）</div><div class="cmn">'+(top.length?top.map(function(t){return '<span>'+t+' <i>×'+cm[t]+'</i></span>'}).join(""):'<span>—</span>')+'</div></div>'}
+    else st='<div class="gst">輸入開獎資料後會顯示近期統計</div>';
+    return '<div class="grp" style="--gc:'+G.gc+'"><h3>'+G.id+'. '+G.nm+'</h3><p class="tip">'+G.tip+'</p>'+body[G.id]+st+'</div>'}).join("");renderPick()}
+/* ===== 自選組合 ===== */
+var HC=null,GMAX=[],PMODE="l",SEL={};
+try{SEL=JSON.parse(localStorage.getItem("m6sel")||"{}")}catch(e){SEL={}}
+function saveSel(){try{localStorage.setItem("m6sel",JSON.stringify(SEL))}catch(e){}}
+function setSel(n,m){n=+n;if(!(n>=1&&n<=49))return;
+  if(m===undefined)m=SEL[n]===PMODE?null:PMODE;
+  if(m==="b"&&SEL[n]!=="b"&&Object.keys(SEL).filter(function(k){return SEL[k]==="b"}).length>=5){$("pkmsg").textContent="膽最多 5 個";return}
+  if(m)SEL[n]=m;else delete SEL[n];saveSel();renderPick()}
+function combs(a,k){var o=[],c=[];(function r(i){if(c.length===k){o.push(c.slice());return}for(var j=i;j<a.length;j++){c.push(a[j]);r(j+1);c.pop()}})(0);return o}
+function gcnt(t){return GRP.map(function(G){return t.filter(function(n){return G.in(n,HC)}).length})}
+function gcls(i,k){var G=GRP[i];if(GMAX[i]!=null&&k>GMAX[i])return "ov";return k>=G.rg[0]&&k<=G.rg[1]?"okk":""}
+function sball(n,cls){var L=lab(n,HC);return '<span class="bw" draggable="true" data-pk="'+n+'"><span class="n '+col(n)+(cls?' '+cls:'')+'">'+pad(n)+mkb(n,HC)+'</span><span class="cbl">'+(L.t?L.t.split("+").join("<br>"):"&nbsp;")+'</span></span>'}
+function renderPick(){
+  var el=$("pick");if(!el||!HC)return;
+  var Bk=[],Lg=[];for(var n=1;n<=49;n++){if(SEL[n]==="b")Bk.push(n);else if(SEL[n]==="l")Lg.push(n)}
+  var h='<h3>自選組合</h3><p class="small" style="margin:0 0 8px">揀「膽」或「腳」，再㩒下面 1–49 或者上面 4 組入面嘅號碼（電腦可以直接拉入框）。再㩒一次取消。</p>'
+   +'<div class="row" style="gap:8px"><div class="seg" id="pkmode"><button data-m="b" class="'+(PMODE==="b"?"on":"")+'">揀膽</button><button data-m="l" class="'+(PMODE==="l"?"on":"")+'">揀腳</button></div><button id="pkclr">清除</button><span class="small neg" id="pkmsg"></span></div>'
+   +'<div class="dz" data-dz="b"><b>膽（'+Bk.length+'）</b>'+(Bk.length?Bk.map(function(n){return sball(n,"pb")}).join(""):'<span class="small">拉號碼入嚟或者揀「揀膽」再㩒號碼</span>')+'</div>'
+   +'<div class="dz" data-dz="l"><b>腳（'+Lg.length+'）</b>'+(Lg.length?Lg.map(function(n){return sball(n,"pl")}).join(""):'<span class="small">拉號碼入嚟或者揀「揀腳」再㩒號碼</span>')+'</div>'
+   +'<div class="pg">';
+  for(n=1;n<=49;n++)h+='<span class="n '+col(n)+(SEL[n]==="b"?" pb":SEL[n]==="l"?" pl":"")+'" data-pk="'+n+'" draggable="true">'+pad(n)+'</span>';
+  h+='</div>';
+  var need=6-Bk.length,bets=[],note="";
+  if(!Bk.length){if(Lg.length>=6){bets=combs(Lg,6);note=Lg.length===6?"單式 1 注":"複式 "+Lg.length+" 個號碼 → "+bets.length+" 注"}else note="未夠 6 個號碼（而家 "+Lg.length+" 個）"}
+  else if(Lg.length<need)note="膽 "+Bk.length+" 個，腳要至少 "+need+" 個（而家 "+Lg.length+" 個）";
+  else{bets=combs(Lg,need).map(function(c){return Bk.concat(c).sort(function(a,b){return a-b})});note="膽拖："+Bk.length+" 膽拖 "+Lg.length+" 腳 → "+bets.length+" 注"}
+  h+='<div class="pres"><div class="pnote"><strong>'+note+'</strong>'+(bets.length?'　每注 $10 共 $'+(bets.length*10).toLocaleString()+'；部份注項 $5 共 $'+(bets.length*5).toLocaleString():'')+'</div>';
+  var all=Bk.concat(Lg);
+  if(all.length){
+    var gc=gcnt(all),bc=gcnt(Bk);
+    h+='<div class="psum">'+GRP.map(function(G,i){var hits=all.filter(function(n){return G.in(n,HC)});
+      var dist={};bets.forEach(function(t){var k=t.filter(function(n){return G.in(n,HC)}).length;dist[k]=(dist[k]||0)+1});
+      var ks=Object.keys(dist).map(Number).sort(function(a,b){return a-b}),ok=0;ks.forEach(function(k){if(k>=G.rg[0]&&k<=G.rg[1])ok+=dist[k]});
+      return '<div class="ps" style="--gc:'+G.gc+'"><div class="psh">'+G.id+'. '+G.nm+'</div><div class="psn">揀咗 <strong>'+hits.length+'</strong> 個'+(Bk.length?'（膽 '+bc[i]+'）':'')+'</div><div class="small">'+(hits.length?hits.map(pad).join(" "):"—")+'</div>'
+        +(bets.length?'<div class="psd">每注：'+ks.map(function(k){return '<span class="'+gcls(i,k)+'">'+k+'個×'+dist[k]+'</span>'}).join(" ")+'</div><div class="small">'+G.tip+'：'+ok+'/'+bets.length+' 注符合'+(GMAX[i]!=null?' · 近 20 期最多 '+GMAX[i]+' 個':'')+'</div>':'')+'</div>'}).join("")+'</div>';
+    var cm={};all.forEach(function(n){var L=lab(n,HC);var t=L.t||"（無）";(cm[t]=cm[t]||[]).push(pad(n))});
+    h+='<div class="cmn" style="margin:6px 0">'+Object.keys(cm).map(function(t){return '<span>'+t+' <i>'+cm[t].join("、")+'</i></span>'}).join("")+'</div>';
+  }
+  if(bets.length){
+    var good=bets.filter(function(t){var g=gcnt(t);return g.every(function(k,i){return k>=GRP[i].rg[0]&&k<=GRP[i].rg[1]})}).length;
+    h+='<div class="small">4 組全部符合「通常」嘅注數：<strong>'+good+'/'+bets.length+'</strong>　<span class="okk">綠＝符合通常</span>　<span class="ov">紅＝超過近 20 期最多</span></div>';
+    var show=bets.slice(0,200);
+    h+='<div class="tw"><table class="ptb"><thead><tr><th>#</th><th>號碼</th><th>沖合三合</th><th>日年肖</th><th>歲煞</th><th>尾頭</th><th>單:雙</th><th>總數</th></tr></thead><tbody>'
+     +show.map(function(t,i){var g=gcnt(t),o=t.filter(function(n){return n%2}).length,sm=t.reduce(function(a,b){return a+b},0);
+       return '<tr><td>'+(i+1)+'</td><td class="pn">'+t.map(function(n){return '<span class="n '+col(n)+(SEL[n]==="b"?" pb":"")+'">'+pad(n)+'</span>'}).join("")+'</td>'+g.map(function(k,j){return '<td class="num '+gcls(j,k)+'">'+k+'</td>'}).join("")+'<td>'+o+':'+(6-o)+'</td><td>'+sm+(sm<150?" 小":" 大")+'</td></tr>'}).join("")
+     +'</tbody></table></div>'+(bets.length>200?'<p class="small">只顯示頭 200 注</p>':'');
+  }
+  el.innerHTML=h+'</div>'}
+document.addEventListener("click",function(e){
+  var m=e.target.closest&&e.target.closest("#pkmode button");if(m){PMODE=m.dataset.m;renderPick();return}
+  if(e.target.id==="pkclr"){SEL={};saveSel();renderPick();return}
+  var b=e.target.closest&&e.target.closest("[data-pk]");if(b&&b.closest(".hero"))setSel(b.dataset.pk)});
+document.addEventListener("dragstart",function(e){var b=e.target.closest&&e.target.closest("[data-pk]");if(b){e.dataTransfer.setData("text/plain",b.dataset.pk);e.dataTransfer.effectAllowed="copyMove"}});
+document.addEventListener("dragover",function(e){var z=e.target.closest&&e.target.closest("[data-dz]");if(z){e.preventDefault();z.classList.add("ovr")}});
+document.addEventListener("dragleave",function(e){var z=e.target.closest&&e.target.closest("[data-dz]");if(z)z.classList.remove("ovr")});
+document.addEventListener("drop",function(e){var z=e.target.closest&&e.target.closest("[data-dz]");if(!z)return;e.preventDefault();z.classList.remove("ovr");var n=e.dataTransfer.getData("text/plain");if(n)setSel(n,z.dataset.dz)});
 function rbody(x,top){
   var r=x.r,sh=x.sg;
   function tg(n){var t="";if(x.D.indexOf(n)>-1)t+='<em class="tk d">日</em>';if(x.Y.indexOf(n)>-1)t+='<em class="tk y">年</em>';if(x.SN.indexOf(n)>-1)t+='<em class="tk s">煞</em>';var w=wxc(n);if(w)t+='<em class="tk '+w+'">'+(w==="w"?"尾":"頭")+'</em>';return '<span class="tg">'+t+'</span>'}
