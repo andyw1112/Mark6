@@ -114,6 +114,12 @@ td .balls .n.L{width:34px;height:34px;font-size:13px}
 .okk{color:var(--he);font-weight:700}.ov{color:var(--chong);font-weight:700}
 .ptb{min-width:560px;margin-top:6px}.ptb td.pn{white-space:nowrap}.ptb .n{display:inline-grid;width:24px;height:24px;font-size:11px;margin-right:2px}.ptb td.num{text-align:center;font-weight:700}
 .swin{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.cdl{position:absolute;right:-6px;bottom:-6px;min-width:13px;height:13px;border-radius:3px;font:800 9px/13px sans-serif;font-style:normal;text-align:center;color:#fff;box-shadow:0 0 0 1px var(--sf);z-index:1}
+.L .cdl{min-width:16px;height:16px;font-size:11px;line-height:16px}
+.cdl.cd-A{background:#6b5bd2}.cdl.cd-B{background:#d2691e}.cdl.cd-C{background:#2e8b57}.cdl.cd-D{background:#1f78b4}.cdl.cd-E{background:#8a6d3b}
+span.cd-A{color:#6b5bd2}span.cd-B{color:#d2691e}span.cd-C{color:#2e8b57}span.cd-D{color:#1f78b4}span.cd-E{color:#8a6d3b}
+.pcd span,.cdbox span[class^="cd-"]{font-weight:800;margin-right:2px}.cdov{color:var(--chong)!important;text-decoration:underline}
+.cdbox{border:1px dashed var(--ln);border-radius:8px;padding:6px 8px;margin:8px 0;font-size:13px}
 .disc{font-size:12px;color:var(--mut);border-top:1px solid var(--ln);padding-top:14px;margin-top:24px}
 </style>
 </head>
@@ -144,7 +150,7 @@ td .balls .n.L{width:34px;height:34px;font-size:13px}
     <div class="small" id="dlabel"></div>
     <div class="pillar" id="pillar"></div>
     <div class="small" id="basenote"></div>
-    <div class="small">球下面細字＝該號碼嘅組合（例：沖+煞、沖+年頭、日尾）。號碼外圈：<span class="nw">玫瑰色＝尾生頭</span>、<span class="nt2">啡金色＝頭生尾</span>　<span class="mkt st">★</span>＝日肖＋尾生頭 或 年肖＋頭生尾　<span class="mkt x">✕</span>＝歲煞＋尾生頭</div>
+    <div class="small">球下面細字＝該號碼嘅組合（例：沖+煞、沖+年頭、日尾）。號碼外圈：<span class="nw">玫瑰色＝尾生頭</span>、<span class="nt2">啡金色＝頭生尾</span>　<span class="mkt st">★</span>＝日肖＋尾生頭 或 年肖＋頭生尾　<span class="mkt x">✕</span>＝歲煞＋尾生頭　球右下字母＝代號（1=A 2=B 3=C 4=D 5=E 6=A…）</div>
   </div>
   <div class="swin"><span class="small">統計期數</span><div class="seg" id="swin"><button data-v="20" class="on">近 20 期</button><button data-v="50">50</button><button data-v="100">100</button><button data-v="300">300</button><button data-v="9999">全部</button></div><span class="small" id="swinfo"></span></div>
   <div class="grps" id="grps"></div>
@@ -239,7 +245,7 @@ function render(){
   HP=P;
   ring(B.b,P);
   var g="";for(var n=1;n<=49;n++){var k=P.c.n.indexOf(n)>-1?"c":P.h.n.indexOf(n)>-1?"h":($("san").checked&&P.s.n.indexOf(n)>-1)?"s":"";
-    g+='<div class="cell '+k+'"><span class="n '+col(n)+'">'+(n<10?"0"+n:n)+mkb(n)+'</span>'+Z[mod(yearOf()-(n-1),12)]+(wxc(n)==="w"?'<span class="wxl nw">尾生頭</span>':wxc(n)==="t"?'<span class="wxl nt2">頭生尾</span>':'')+'</div>'}
+    g+='<div class="cell '+k+'"><span class="n '+col(n)+'">'+(n<10?"0"+n:n)+mkb(n)+cdb(n)+'</span>'+Z[mod(yearOf()-(n-1),12)]+(wxc(n)==="w"?'<span class="wxl nw">尾生頭</span>':wxc(n)==="t"?'<span class="wxl nt2">頭生尾</span>':'')+'</div>'}
   $("g49").innerHTML=g;heroStats();backtest()}
 var NEXT={"issue": "26/124", "date": "2026-11-24", "cutoff": "21:15", "jackpot": 68000000, "snowball": 50000000, "snowballName": "幸運二金多寶", "note": "集氣加碼：按 11-23 下午 2 時累積投注額定。不足 6,000 萬→金多寶 5,000 萬／頭獎 6,800 萬；6,000–7,000 萬→5,500 萬／7,300 萬；7,000 萬或以上→6,000 萬／8,000 萬。11-21（六）停攪一次。", "manual": true, "updated": "2026-11-19"};
 function renderNext(n){
@@ -251,7 +257,13 @@ function renderNext(n){
 function pad(n){return n<10?"0"+n:""+n}
 var WD="日一二三四五六";
 function shaOf(b){return [8,0,4].indexOf(b)>-1?{d:"南",t:[2,7]}:[5,9,1].indexOf(b)>-1?{d:"東",t:[3,8]}:[2,6,10].indexOf(b)>-1?{d:"北",t:[1,6]}:{d:"西",t:[4,9]}}
-function B(n,o){o=o||{};return '<span class="n '+col(n)+(o.L?' L':'')+(o.rg?' rg-'+o.rg:'')+(o.dim?' dim':'')+'">'+pad(n)+(o.ck?'<u class="ck">✓</u>':'')+(o.mk||'')+'</span>'}
+/* 代號：1=A 2=B 3=C 4=D 5=E 6=A …（即尾數 1/6=A、2/7=B、3/8=C、4/9=D、5/0=E） */
+var CDS="ABCDE";function cd(n){return CDS[(n-1)%5]}
+function cdb(n){return '<i class="cdl cd-'+cd(n)+'">'+cd(n)+'</i>'}
+function cdc(t){var c={A:0,B:0,C:0,D:0,E:0};t.forEach(function(n){c[cd(n)]++});return c}
+function cdmax(t){var c=cdc(t),m=0;for(var k in c)if(c[k]>m)m=c[k];return m}
+function cdstr(t){var c=cdc(t);return CDS.split("").filter(function(k){return c[k]}).map(function(k){return '<span class="cd-'+k+(c[k]>=3?' cdov':'')+'">'+k+c[k]+'</span>'}).join(" ")}
+function B(n,o){o=o||{};return '<span class="n '+col(n)+(o.L?' L':'')+(o.rg?' rg-'+o.rg:'')+(o.dim?' dim':'')+'">'+pad(n)+(o.ck?'<u class="ck">✓</u>':'')+(o.mk||'')+(o.L?cdb(n):'')+'</span>'}
 function zo(n){return Z[mod(yearOf()-(n-1),12)]}
 var WXE=[2,4,1,0,3,2,4,1,0,3];/* 數字→五行 0木1火2土3金4水（河圖：1,6水 2,7火 3,8木 4,9金 5,0土）；i 生 i+1 */
 function wxc(n){var h=WXE[Math.floor(n/10)],t=WXE[n%10];return mod(t+1,5)===h?"w":mod(h+1,5)===t?"t":""}
@@ -320,8 +332,8 @@ function heroStats(){
   var C={c:HP.c.n,h:HP.h.n,s:$("san").checked?HP.s.n:[],D:nums(B0.p.br,yb),Y:nums(yb,yb),S:S};
   var res=rows.slice(0,SWIN).map(function(r,i){return calc(r,i)}),NN=res.length,TH=Math.max(2,Math.floor(NN/10));
   if(res.length)$("swinfo").textContent="（"+res[res.length-1].r.iss+" 至 "+res[0].r.iss+"，共 "+NN+" 期）";
-  HC=C;SWN=NN;GMAX=GRP.map(function(G){var m=0;res.forEach(function(x){var c=ctxOf(x),k=x.r.b.filter(function(n){return G.in(n,c)}).length;if(k>m)m=k});return res.length?m:null});
-  function bl(arr){return '<div class="gb">'+arr.map(function(n){var L=lab(n,C),w=wxc(n);return '<span class="bw" draggable="true" data-pk="'+n+'">'+'<span class="n '+col(n)+(w?' wx-'+w:'')+'">'+pad(n)+mkb(n,C)+'</span><span class="cbl">'+(L.k>1?L.t.split("+").join("<br>"):"&nbsp;")+'</span></span>'}).join("")+'</div>'}
+  HC=C;SWN=NN;HRES=res;GMAX=GRP.map(function(G){var m=0;res.forEach(function(x){var c=ctxOf(x),k=x.r.b.filter(function(n){return G.in(n,c)}).length;if(k>m)m=k});return res.length?m:null});
+  function bl(arr){return '<div class="gb">'+arr.map(function(n){var L=lab(n,C),w=wxc(n);return '<span class="bw" draggable="true" data-pk="'+n+'">'+'<span class="n '+col(n)+(w?' wx-'+w:'')+'">'+pad(n)+mkb(n,C)+cdb(n)+'</span><span class="cbl">'+(L.k>1?L.t.split("+").join("<br>"):"&nbsp;")+'</span></span>'}).join("")+'</div>'}
   function sub(tag,cls,name,arr){return '<div class="gsub"><span class="tag '+cls+'">'+tag+'</span><b>'+name+'</b> <span class="small">'+arr.length+' 個</span></div>'+bl(arr)}
   var body={
    1:sub("沖","t-c",zn(HP.c.z),HP.c.n)+sub("合","t-h",zn(HP.h.z),HP.h.n)+($("san").checked?sub("三合","t-s",zn(HP.s.z),HP.s.n):""),
@@ -342,7 +354,7 @@ function heroStats(){
     else st='<div class="gst">輸入開獎資料後會顯示近期統計</div>';
     return '<div class="grp" style="--gc:'+G.gc+'"><h3>'+G.id+'. '+G.nm+'</h3><p class="tip">'+G.tip+'</p>'+body[G.id]+st+'</div>'}).join("");renderPick()}
 /* ===== 自選組合 ===== */
-var SWIN=20,SWN=20,HC=null,GMAX=[],PMODE="l",SEL={};
+var HRES=[],SWIN=20,SWN=20,HC=null,GMAX=[],PMODE="l",SEL={};
 try{SEL=JSON.parse(localStorage.getItem("m6sel")||"{}")}catch(e){SEL={}}
 function saveSel(){try{localStorage.setItem("m6sel",JSON.stringify(SEL))}catch(e){}}
 function setSel(n,m){n=+n;if(!(n>=1&&n<=49))return;
@@ -352,7 +364,7 @@ function setSel(n,m){n=+n;if(!(n>=1&&n<=49))return;
 function combs(a,k){var o=[],c=[];(function r(i){if(c.length===k){o.push(c.slice());return}for(var j=i;j<a.length;j++){c.push(a[j]);r(j+1);c.pop()}})(0);return o}
 function gcnt(t){return GRP.map(function(G){return t.filter(function(n){return G.in(n,HC)}).length})}
 function gcls(i,k){var G=GRP[i];if(GMAX[i]!=null&&k>GMAX[i])return "ov";return k>=G.rg[0]&&k<=G.rg[1]?"okk":""}
-function sball(n,cls){var L=lab(n,HC);return '<span class="bw" draggable="true" data-pk="'+n+'"><span class="n '+col(n)+(cls?' '+cls:'')+'">'+pad(n)+mkb(n,HC)+'</span><span class="cbl">'+(L.t?L.t.split("+").join("<br>"):"&nbsp;")+'</span></span>'}
+function sball(n,cls){var L=lab(n,HC);return '<span class="bw" draggable="true" data-pk="'+n+'"><span class="n '+col(n)+(cls?' '+cls:'')+'">'+pad(n)+mkb(n,HC)+cdb(n)+'</span><span class="cbl">'+(L.t?L.t.split("+").join("<br>"):"&nbsp;")+'</span></span>'}
 function renderPick(){
   var el=$("pick");if(!el||!HC)return;
   var Bk=[],Lg=[];for(var n=1;n<=49;n++){if(SEL[n]==="b")Bk.push(n);else if(SEL[n]==="l")Lg.push(n)}
@@ -361,7 +373,7 @@ function renderPick(){
    +'<div class="dz" data-dz="b"><b>膽（'+Bk.length+'）</b>'+(Bk.length?Bk.map(function(n){return sball(n,"pb")}).join(""):'<span class="small">拉號碼入嚟或者揀「揀膽」再㩒號碼</span>')+'</div>'
    +'<div class="dz" data-dz="l"><b>腳（'+Lg.length+'）</b>'+(Lg.length?Lg.map(function(n){return sball(n,"pl")}).join(""):'<span class="small">拉號碼入嚟或者揀「揀腳」再㩒號碼</span>')+'</div>'
    +'<div class="pg">';
-  for(n=1;n<=49;n++)h+='<span class="n '+col(n)+(SEL[n]==="b"?" pb":SEL[n]==="l"?" pl":"")+'" data-pk="'+n+'" draggable="true">'+pad(n)+'</span>';
+  for(n=1;n<=49;n++)h+='<span class="n '+col(n)+(SEL[n]==="b"?" pb":SEL[n]==="l"?" pl":"")+'" data-pk="'+n+'" draggable="true">'+pad(n)+cdb(n)+'</span>';
   h+='</div>';
   var need=6-Bk.length,bets=[],note="";
   if(!Bk.length){if(Lg.length>=6){bets=combs(Lg,6);note=Lg.length===6?"單式 1 注":"複式 "+Lg.length+" 個號碼 → "+bets.length+" 注"}else note="未夠 6 個號碼（而家 "+Lg.length+" 個）"}
@@ -379,13 +391,21 @@ function renderPick(){
     var cm={};all.forEach(function(n){var L=lab(n,HC);var t=L.t||"（無）";(cm[t]=cm[t]||[]).push(pad(n))});
     h+='<div class="cmn" style="margin:6px 0">'+Object.keys(cm).map(function(t){return '<span>'+t+' <i>'+cm[t].join("、")+'</i></span>'}).join("")+'</div>';
   }
+  if(all.length){
+    var hd={};HRES.forEach(function(x){var m=cdmax(x.r.b);hd[m]=(hd[m]||0)+1});
+    var bd={};bets.forEach(function(t){var m=cdmax(t);bd[m]=(bd[m]||0)+1});
+    var fmt=function(d,tot){return Object.keys(d).map(Number).sort().map(function(m){return '<span class="'+(m>=3?'cdov':'')+'">最多 '+m+' 個同代號 ×'+d[m]+(tot?'（'+(d[m]/tot*100).toFixed(0)+'%）':'')+'</span>'}).join("　")};
+    h+='<div class="cdbox"><strong>代號</strong>（1=A 2=B 3=C 4=D 5=E 6=A…）揀咗：'+cdstr(all)
+      +(bets.length?'<div class="small">每注：'+fmt(bd,bets.length)+'</div>':'')
+      +(HRES.length?'<div class="small">近 '+HRES.length+' 期實際（6 正選）：'+fmt(hd,HRES.length)+'</div>':'')+'</div>';
+  }
   if(bets.length){
     var good=bets.filter(function(t){var g=gcnt(t);return g.every(function(k,i){return k>=GRP[i].rg[0]&&k<=GRP[i].rg[1]})}).length;
     h+='<div class="small">4 組全部符合「通常」嘅注數：<strong>'+good+'/'+bets.length+'</strong>　<span class="okk">綠＝符合通常</span>　<span class="ov">紅＝超過近 '+SWN+' 期最多</span></div>';
     var show=bets.slice(0,200);
-    h+='<div class="tw"><table class="ptb"><thead><tr><th>#</th><th>號碼</th><th>沖合三合</th><th>日年肖</th><th>歲煞</th><th>尾頭</th><th>單:雙</th><th>總數</th></tr></thead><tbody>'
+    h+='<div class="tw"><table class="ptb"><thead><tr><th>#</th><th>號碼</th><th>沖合三合</th><th>日年肖</th><th>歲煞</th><th>尾頭</th><th>代號</th><th>單:雙</th><th>總數</th></tr></thead><tbody>'
      +show.map(function(t,i){var g=gcnt(t),o=t.filter(function(n){return n%2}).length,sm=t.reduce(function(a,b){return a+b},0);
-       return '<tr><td>'+(i+1)+'</td><td class="pn">'+t.map(function(n){return '<span class="n '+col(n)+(SEL[n]==="b"?" pb":"")+'">'+pad(n)+'</span>'}).join("")+'</td>'+g.map(function(k,j){return '<td class="num '+gcls(j,k)+'">'+k+'</td>'}).join("")+'<td>'+o+':'+(6-o)+'</td><td>'+sm+(sm<150?" 小":" 大")+'</td></tr>'}).join("")
+       return '<tr><td>'+(i+1)+'</td><td class="pn">'+t.map(function(n){return '<span class="n '+col(n)+(SEL[n]==="b"?" pb":"")+'">'+pad(n)+'</span>'}).join("")+'</td>'+g.map(function(k,j){return '<td class="num '+gcls(j,k)+'">'+k+'</td>'}).join("")+'<td class="pcd">'+cdstr(t)+'</td><td>'+o+':'+(6-o)+'</td><td>'+sm+(sm<150?" 小":" 大")+'</td></tr>'}).join("")
      +'</tbody></table></div>'+(bets.length>200?'<p class="small">只顯示頭 200 注</p>':'');
   }
   el.innerHTML=h+'</div>'}
