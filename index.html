@@ -258,11 +258,11 @@ function pad(n){return n<10?"0"+n:""+n}
 var WD="日一二三四五六";
 function shaOf(b){return [8,0,4].indexOf(b)>-1?{d:"南",t:[2,7]}:[5,9,1].indexOf(b)>-1?{d:"東",t:[3,8]}:[2,6,10].indexOf(b)>-1?{d:"北",t:[1,6]}:{d:"西",t:[4,9]}}
 /* 代號：1=A 2=B 3=C 4=D 5=E 6=A …（即尾數 1/6=A、2/7=B、3/8=C、4/9=D、5/0=E） */
-var CDS="ABCDE";function cd(n){return CDS[(n-1)%5]}
+var CDS="ABCDE",CDMAX=3;/* 揀號碼時同一代號最多 3 個 */function cd(n){return CDS[(n-1)%5]}
 function cdb(n){return '<i class="cdl cd-'+cd(n)+'">'+cd(n)+'</i>'}
 function cdc(t){var c={A:0,B:0,C:0,D:0,E:0};t.forEach(function(n){c[cd(n)]++});return c}
 function cdmax(t){var c=cdc(t),m=0;for(var k in c)if(c[k]>m)m=c[k];return m}
-function cdstr(t){var c=cdc(t);return CDS.split("").filter(function(k){return c[k]}).map(function(k){return '<span class="cd-'+k+(c[k]>=3?' cdov':'')+'">'+k+c[k]+'</span>'}).join(" ")}
+function cdstr(t){var c=cdc(t);return CDS.split("").filter(function(k){return c[k]}).map(function(k){return '<span class="cd-'+k+(c[k]>CDMAX?' cdov':'')+'">'+k+c[k]+'</span>'}).join(" ")}
 function B(n,o){o=o||{};return '<span class="n '+col(n)+(o.L?' L':'')+(o.rg?' rg-'+o.rg:'')+(o.dim?' dim':'')+'">'+pad(n)+(o.ck?'<u class="ck">✓</u>':'')+(o.mk||'')+(o.L?cdb(n):'')+'</span>'}
 function zo(n){return Z[mod(yearOf()-(n-1),12)]}
 var WXE=[2,4,1,0,3,2,4,1,0,3];/* 數字→五行 0木1火2土3金4水（河圖：1,6水 2,7火 3,8木 4,9金 5,0土）；i 生 i+1 */
@@ -360,6 +360,8 @@ function saveSel(){try{localStorage.setItem("m6sel",JSON.stringify(SEL))}catch(e
 function setSel(n,m){n=+n;if(!(n>=1&&n<=49))return;
   if(m===undefined)m=SEL[n]===PMODE?null:PMODE;
   if(m==="b"&&SEL[n]!=="b"&&Object.keys(SEL).filter(function(k){return SEL[k]==="b"}).length>=5){$("pkmsg").textContent="膽最多 5 個";return}
+  if(m&&!SEL[n]){var same=Object.keys(SEL).filter(function(k){return cd(+k)===cd(n)});
+    if(same.length>=CDMAX){$("pkmsg").textContent="代號 "+cd(n)+" 已經揀咗 "+CDMAX+" 個（"+same.map(function(k){return pad(+k)}).join("、")+"），唔可以再揀 "+pad(n);return}}
   if(m)SEL[n]=m;else delete SEL[n];saveSel();renderPick()}
 function combs(a,k){var o=[],c=[];(function r(i){if(c.length===k){o.push(c.slice());return}for(var j=i;j<a.length;j++){c.push(a[j]);r(j+1);c.pop()}})(0);return o}
 function gcnt(t){return GRP.map(function(G){return t.filter(function(n){return G.in(n,HC)}).length})}
@@ -394,8 +396,9 @@ function renderPick(){
   if(all.length){
     var hd={};HRES.forEach(function(x){var m=cdmax(x.r.b);hd[m]=(hd[m]||0)+1});
     var bd={};bets.forEach(function(t){var m=cdmax(t);bd[m]=(bd[m]||0)+1});
-    var fmt=function(d,tot){return Object.keys(d).map(Number).sort().map(function(m){return '<span class="'+(m>=3?'cdov':'')+'">最多 '+m+' 個同代號 ×'+d[m]+(tot?'（'+(d[m]/tot*100).toFixed(0)+'%）':'')+'</span>'}).join("　")};
+    var fmt=function(d,tot){return Object.keys(d).map(Number).sort().map(function(m){return '<span class="'+(m>CDMAX?'cdov':'')+'">最多 '+m+' 個同代號 ×'+d[m]+(tot?'（'+(d[m]/tot*100).toFixed(0)+'%）':'')+'</span>'}).join("　")};
     h+='<div class="cdbox"><strong>代號</strong>（1=A 2=B 3=C 4=D 5=E 6=A…）揀咗：'+cdstr(all)
+      +'<div class="small">規則：同一代號最多 '+CDMAX+' 個（再揀第 '+(CDMAX+1)+' 個會擋住）</div>'
       +(bets.length?'<div class="small">每注：'+fmt(bd,bets.length)+'</div>':'')
       +(HRES.length?'<div class="small">近 '+HRES.length+' 期實際（6 正選）：'+fmt(hd,HRES.length)+'</div>':'')+'</div>';
   }
