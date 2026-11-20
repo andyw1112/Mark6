@@ -122,6 +122,7 @@ span.cd-H{color:#6b5bd2}span.cd-L{color:#d1477a}span.cd-G{color:#1f78b4}span.cd-
 .cdwarn{color:var(--chong);font-weight:700;margin-top:2px}.cdbox{border:1px dashed var(--ln);border-radius:8px;padding:6px 8px;margin:8px 0;font-size:13px}
 .dzx{grid-column:1/-1;min-width:0;border:1px solid var(--ln);border-top:4px solid var(--chong);border-radius:10px;padding:12px}
 .dzx h3{margin:0 0 2px;font-size:17px}.dzcur{border:1px dashed var(--ln);border-radius:8px;padding:8px;margin:6px 0 8px;font-size:13px;line-height:1.7}
+.cbk{border-top:1px dashed var(--ln);margin-top:6px;padding-top:4px}.cbh{font-size:13px}.cbk .cmn span b{color:var(--ink)}.cbk .cmn span.solo{background:rgba(127,127,127,.08)}
 .dzt{min-width:640px}.dzd summary{cursor:pointer;color:var(--mut);font-size:13px;padding:4px 0}.dzt td,.dzt th{text-align:center}.dzt tr.cur td{background:rgba(242,194,48,.14)}.dzt b.pos{color:var(--he)}.dzt b.neg{color:var(--chong)}
 .disc{font-size:12px;color:var(--mut);border-top:1px solid var(--ln);padding-top:14px;margin-top:24px}
 </style>
@@ -380,12 +381,24 @@ function renderDZX(curBr){
   var order=[];for(var i=0;i<12;i++)order.push(mod(curBr+i,12));
   var h='<h3>日肖 × 沖／六合／三合</h3><p class="small" style="margin:0 0 6px">每個日肖嗰期，平均開出幾多個沖、六合、三合號碼（全部 '+DZX.n+' 期：'+DZX.from+' 至 '+DZX.to+'，只計 6 個正選；生肖跟每期農曆年）。綠＝高過隨機 15% 以上，紅＝低過 15% 以上。</p>';
   var a=A[curBr];
-  if(a.n)h+='<div class="dzcur"><strong>'+Z[curBr]+'日（今期）共 '+a.n+' 期</strong>'
-    +'<div>沖（'+Z[mod(curBr+6,12)]+'）：平均 <b>'+f2(a.c,a.n)+'</b> 個（隨機 '+f2(a.ec,a.n)+'）　'+dist(a.dc,a.n)+'</div>'
-    +'<div>六合（'+Z[mod(1-curBr,12)]+'）：平均 <b>'+f2(a.h,a.n)+'</b> 個（隨機 '+f2(a.eh,a.n)+'）　'+dist(a.dh,a.n)+'</div>'
-    +'<div>三合（'+Z[mod(curBr+4,12)]+'）：平均 <b>'+f2(a.s1,a.n)+'</b> 個（隨機 '+f2(a.es1,a.n)+'）　'+dist(a.ds1,a.n)+'</div>'
-    +'<div>三合（'+Z[mod(curBr+8,12)]+'）：平均 <b>'+f2(a.s2,a.n)+'</b> 個（隨機 '+f2(a.es2,a.n)+'）　'+dist(a.ds2,a.n)+'</div>'
-    +'<div>沖＋六合＋三合：平均 <b>'+f2(a.t,a.n)+'</b> 個（隨機 '+f2(a.ec+a.eh+a.es1+a.es2,a.n)+'）　'+dist(a.dt,a.n)+'</div></div>';
+  /* 今期日肖：沖／六合／三合 號碼出嘅時候通常同咩組合一齊出（全部歷史同日肖期數，6 正選） */
+  var CB=[{nm:"沖",zz:Z[mod(curBr+6,12)],o:6},{nm:"六合",zz:Z[mod(1-curBr,12)],o:-1},{nm:"三合",zz:Z[mod(curBr+4,12)],o:4},{nm:"三合",zz:Z[mod(curBr+8,12)],o:8}];
+  CB.forEach(function(q){q.n=0;q.hit=0;q.cnt={};q.ex={};q.exT=0;q.dz={}});
+  rows.forEach(function(r){var br=pillar(r.date).br;if(br!==curBr)return;var yb=ybOf(r.date);
+    var sg=shaOf(br),S=[];for(var q=1;q<=49;q++)if(sg.t.indexOf(q%10)>-1)S.push(q);
+    var cx={c:nums(mod(br+6,12),yb),h:nums(mod(1-br,12),yb),s:nums(mod(br+4,12),yb).concat(nums(mod(br+8,12),yb)),D:nums(br,yb),Y:nums(yb,yb),S:S};
+    CB.forEach(function(q){var pool=q.o<0?cx.h:nums(mod(br+q.o,12),yb);q.n++;var k=0;
+      pool.forEach(function(n){var L=lab(n,cx),t=L.k>1?L.t:"單獨";q.ex[t]=(q.ex[t]||0)+6/49;q.exT+=6/49;
+        if(r.b.indexOf(n)>-1){k++;q.hit++;q.cnt[t]=(q.cnt[t]||0)+1}});q.dz[k]=(q.dz[k]||0)+1})});
+  var blk=function(q){if(!q.n)return "";var keys=Object.keys(Object.assign({},q.ex,q.cnt)).sort(function(x,y){return (q.cnt[y]||0)-(q.cnt[x]||0)});
+    keys=keys.filter(function(t){return t!=="單獨"&&((q.cnt[t]||0)>0||(q.ex[t]||0)/q.exT>=0.01)}).concat(keys.indexOf("單獨")>-1?["單獨"]:[]);
+    return '<div class="cbk"><div class="cbh"><b>'+q.nm+'（'+q.zz+'）</b>　平均 '+(q.hit/q.n).toFixed(2)+' 個／期（隨機 '+(q.exT/q.n).toFixed(2)+'）　'+dist(q.dz,q.n)+'</div><div class="cmn">'
+      +keys.map(function(t){var c=q.cnt[t]||0,sh=q.hit?c/q.hit*100:0,es=q.exT?(q.ex[t]||0)/q.exT*100:0;
+        return '<span'+(t==="單獨"?' class="solo"':'')+'>'+t+' <b>'+c+'</b> 次 <i>'+sh.toFixed(0)+'%（隨機 '+es.toFixed(0)+'%）</i></span>'}).join("")+'</div></div>'};
+  if(a.n)h+='<div class="dzcur"><strong>'+Z[curBr]+'日（今期）共 '+a.n+' 期：沖／六合／三合號碼出嘅時候，通常同咩組合一齊出</strong>'
+    +'<div class="small">「單獨」＝個號碼唔屬於日肖／年肖／歲煞／尾生頭／頭生尾任何一組。% ＝佔嗰類號碼開出次數嘅比例；隨機＝按號碼池比例預計。</div>'
+    +CB.map(blk).join("")
+    +'<div class="cbh" style="margin-top:6px"><b>沖＋六合＋三合</b>　平均 '+f2(a.t,a.n)+' 個／期（隨機 '+f2(a.ec+a.eh+a.es1+a.es2,a.n)+'）　'+dist(a.dt,a.n)+'</div></div>';
   h+='<details class="dzd"><summary>顯示 12 個日肖一覽表</summary><div class="tw"><table class="dzt"><thead><tr><th>日肖</th><th>期數</th><th>沖</th><th>六合</th><th>三合①</th><th>三合②</th><th>合計</th><th>合計最常見</th></tr></thead><tbody>'
    +order.map(function(k){var a=A[k];var md=Object.keys(a.dt).sort(function(x,y){return a.dt[y]-a.dt[x]})[0];
      return '<tr'+(k===curBr?' class="cur"':'')+'><td><b>'+Z[k]+'日</b><div class="gs">沖'+Z[mod(k+6,12)]+' 合'+Z[mod(1-k,12)]+' 三'+Z[mod(k+4,12)]+'／'+Z[mod(k+8,12)]+'</div></td><td class="num">'+a.n+'</td>'
