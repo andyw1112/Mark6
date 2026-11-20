@@ -122,7 +122,7 @@ span.cd-A{color:#6b5bd2}span.cd-B{color:#d2691e}span.cd-C{color:#2e8b57}span.cd-
 .cdwarn{color:var(--chong);font-weight:700;margin-top:2px}.cdbox{border:1px dashed var(--ln);border-radius:8px;padding:6px 8px;margin:8px 0;font-size:13px}
 .dzx{grid-column:1/-1;min-width:0;border:1px solid var(--ln);border-top:4px solid var(--chong);border-radius:10px;padding:12px}
 .dzx h3{margin:0 0 2px;font-size:17px}.dzcur{border:1px dashed var(--ln);border-radius:8px;padding:8px;margin:6px 0 8px;font-size:13px;line-height:1.7}
-.dzt{min-width:560px}.dzt td,.dzt th{text-align:center}.dzt tr.cur td{background:rgba(242,194,48,.14)}.dzt b.pos{color:var(--he)}.dzt b.neg{color:var(--chong)}
+.dzt{min-width:640px}.dzd summary{cursor:pointer;color:var(--mut);font-size:13px;padding:4px 0}.dzt td,.dzt th{text-align:center}.dzt tr.cur td{background:rgba(242,194,48,.14)}.dzt b.pos{color:var(--he)}.dzt b.neg{color:var(--chong)}
 .disc{font-size:12px;color:var(--mut);border-top:1px solid var(--ln);padding-top:14px;margin-top:24px}
 </style>
 </head>
@@ -363,15 +363,17 @@ function renderDZX(curBr){
   var el=$("dzx");if(!el)return;
   if(!rows.length){el.innerHTML="";return}
   if(!DZX||DZX.n!==rows.length){
-    var A=[];for(var k=0;k<12;k++)A.push({n:0,c:0,h:0,s:0,t:0,ec:0,eh:0,es:0,dc:{},dh:{},ds:{},dt:{}});
-    rows.forEach(function(r){var br=pillar(r.date).br,yb=ybOf(r.date),P=pools(br,yb,true),a=A[br];
+    var A=[];for(var k=0;k<12;k++)A.push({n:0,c:0,h:0,s1:0,s2:0,t:0,ec:0,eh:0,es1:0,es2:0,dc:{},dh:{},ds1:{},ds2:{},dt:{}});
+    rows.forEach(function(r){var br=pillar(r.date).br,yb=ybOf(r.date),a=A[br];
+      var pc=nums(mod(br+6,12),yb),ph=nums(mod(1-br,12),yb),p1=nums(mod(br+4,12),yb),p2=nums(mod(br+8,12),yb);
       var f=function(pool){return r.b.filter(function(n){return pool.indexOf(n)>-1}).length};
-      var c=f(P.c.n),h=f(P.h.n),s3=f(P.s.n);a.n++;a.c+=c;a.h+=h;a.s+=s3;a.t+=c+h+s3;
-      a.ec+=P.c.n.length*6/49;a.eh+=P.h.n.length*6/49;a.es+=P.s.n.length*6/49;
-      a.dc[c]=(a.dc[c]||0)+1;a.dh[h]=(a.dh[h]||0)+1;a.ds[s3]=(a.ds[s3]||0)+1;a.dt[c+h+s3]=(a.dt[c+h+s3]||0)+1});
+      var c=f(pc),h=f(ph),s1=f(p1),s2=f(p2),t=c+h+s1+s2;a.n++;a.c+=c;a.h+=h;a.s1+=s1;a.s2+=s2;a.t+=t;
+      a.ec+=pc.length*6/49;a.eh+=ph.length*6/49;a.es1+=p1.length*6/49;a.es2+=p2.length*6/49;
+      a.dc[c]=(a.dc[c]||0)+1;a.dh[h]=(a.dh[h]||0)+1;a.ds1[s1]=(a.ds1[s1]||0)+1;a.ds2[s2]=(a.ds2[s2]||0)+1;a.dt[t]=(a.dt[t]||0)+1});
     DZX={n:rows.length,A:A,from:rows[rows.length-1].iss,to:rows[0].iss}}
   var A=DZX.A,f2=function(v,n){return n?(v/n).toFixed(2):"–"};
   var cell=function(v,e,n){if(!n)return '<td>–</td>';var a=v/n,ex=e/n,cls=a>ex*1.15?"pos":a<ex*0.85?"neg":"";return '<td class="num"><b class="'+cls+'">'+a.toFixed(2)+'</b><div class="gs">隨機 '+ex.toFixed(2)+'</div></td>'};
+  var cell2=function(v,e,n,z){return cell(v,e,n).replace('<td class="num">','<td class="num"><div class="gs">'+z+'</div>')};
   var dist=function(d,n){return Object.keys(d).map(Number).sort(function(a,b){return a-b}).map(function(k){return k+'個 '+(d[k]/n*100).toFixed(0)+'%'}).join("　")};
   var order=[];for(var i=0;i<12;i++)order.push(mod(curBr+i,12));
   var h='<h3>日肖 × 沖／六合／三合</h3><p class="small" style="margin:0 0 6px">每個日肖嗰期，平均開出幾多個沖、六合、三合號碼（全部 '+DZX.n+' 期：'+DZX.from+' 至 '+DZX.to+'，只計 6 個正選；生肖跟每期農曆年）。綠＝高過隨機 15% 以上，紅＝低過 15% 以上。</p>';
@@ -379,14 +381,15 @@ function renderDZX(curBr){
   if(a.n)h+='<div class="dzcur"><strong>'+Z[curBr]+'日（今期）共 '+a.n+' 期</strong>'
     +'<div>沖（'+Z[mod(curBr+6,12)]+'）：平均 <b>'+f2(a.c,a.n)+'</b> 個（隨機 '+f2(a.ec,a.n)+'）　'+dist(a.dc,a.n)+'</div>'
     +'<div>六合（'+Z[mod(1-curBr,12)]+'）：平均 <b>'+f2(a.h,a.n)+'</b> 個（隨機 '+f2(a.eh,a.n)+'）　'+dist(a.dh,a.n)+'</div>'
-    +'<div>三合（'+Z[mod(curBr+4,12)]+'、'+Z[mod(curBr+8,12)]+'）：平均 <b>'+f2(a.s,a.n)+'</b> 個（隨機 '+f2(a.es,a.n)+'）　'+dist(a.ds,a.n)+'</div>'
-    +'<div>沖＋六合＋三合：平均 <b>'+f2(a.t,a.n)+'</b> 個（隨機 '+f2(a.ec+a.eh+a.es,a.n)+'）　'+dist(a.dt,a.n)+'</div></div>';
-  h+='<div class="tw"><table class="dzt"><thead><tr><th>日肖</th><th>期數</th><th>沖</th><th>六合</th><th>三合</th><th>合計</th><th>合計最常見</th></tr></thead><tbody>'
+    +'<div>三合（'+Z[mod(curBr+4,12)]+'）：平均 <b>'+f2(a.s1,a.n)+'</b> 個（隨機 '+f2(a.es1,a.n)+'）　'+dist(a.ds1,a.n)+'</div>'
+    +'<div>三合（'+Z[mod(curBr+8,12)]+'）：平均 <b>'+f2(a.s2,a.n)+'</b> 個（隨機 '+f2(a.es2,a.n)+'）　'+dist(a.ds2,a.n)+'</div>'
+    +'<div>沖＋六合＋三合：平均 <b>'+f2(a.t,a.n)+'</b> 個（隨機 '+f2(a.ec+a.eh+a.es1+a.es2,a.n)+'）　'+dist(a.dt,a.n)+'</div></div>';
+  h+='<details class="dzd"><summary>顯示 12 個日肖一覽表</summary><div class="tw"><table class="dzt"><thead><tr><th>日肖</th><th>期數</th><th>沖</th><th>六合</th><th>三合①</th><th>三合②</th><th>合計</th><th>合計最常見</th></tr></thead><tbody>'
    +order.map(function(k){var a=A[k];var md=Object.keys(a.dt).sort(function(x,y){return a.dt[y]-a.dt[x]})[0];
-     return '<tr'+(k===curBr?' class="cur"':'')+'><td><b>'+Z[k]+'日</b><div class="gs">沖'+Z[mod(k+6,12)]+' 合'+Z[mod(1-k,12)]+' 三'+Z[mod(k+4,12)]+Z[mod(k+8,12)]+'</div></td><td class="num">'+a.n+'</td>'
-       +cell(a.c,a.ec,a.n)+cell(a.h,a.eh,a.n)+cell(a.s,a.es,a.n)+cell(a.t,a.ec+a.eh+a.es,a.n)
+     return '<tr'+(k===curBr?' class="cur"':'')+'><td><b>'+Z[k]+'日</b><div class="gs">沖'+Z[mod(k+6,12)]+' 合'+Z[mod(1-k,12)]+' 三'+Z[mod(k+4,12)]+'／'+Z[mod(k+8,12)]+'</div></td><td class="num">'+a.n+'</td>'
+       +cell(a.c,a.ec,a.n)+cell(a.h,a.eh,a.n)+cell2(a.s1,a.es1,a.n,Z[mod(k+4,12)])+cell2(a.s2,a.es2,a.n,Z[mod(k+8,12)])+cell(a.t,a.ec+a.eh+a.es1+a.es2,a.n)
        +'<td class="num">'+(a.n?md+' 個（'+(a.dt[md]/a.n*100).toFixed(0)+'%）':'–')+'</td></tr>'}).join("")
-   +'</tbody></table></div>';
+   +'</tbody></table></div></details>';
   el.innerHTML=h}
 /* ===== 自選組合 ===== */
 var HRES=[],SWIN=20,SWN=20,HC=null,GMAX=[],PMODE="l",SEL={};
