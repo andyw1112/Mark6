@@ -116,8 +116,8 @@ td .balls .n.L{width:34px;height:34px;font-size:13px}
 .swin{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
 .cdl{position:absolute;right:-6px;bottom:-6px;min-width:13px;height:13px;border-radius:3px;font:800 9px/13px sans-serif;font-style:normal;text-align:center;color:#fff;box-shadow:0 0 0 1px var(--sf);z-index:1}
 .L .cdl{min-width:16px;height:16px;font-size:11px;line-height:16px}
-.cdl.cd-A{background:#6b5bd2}.cdl.cd-B{background:#d2691e}.cdl.cd-C{background:#2e8b57}.cdl.cd-D{background:#1f78b4}.cdl.cd-E{background:#8a6d3b}
-span.cd-A{color:#6b5bd2}span.cd-B{color:#d2691e}span.cd-C{color:#2e8b57}span.cd-D{color:#1f78b4}span.cd-E{color:#8a6d3b}
+.cdl.cd-H{background:#6b5bd2}.cdl.cd-L{background:#d1477a}.cdl.cd-G{background:#1f78b4}.cdl.cd-B{background:#a86b12}.cdl.cd-S{background:#6b7280}
+span.cd-H{color:#6b5bd2}span.cd-L{color:#d1477a}span.cd-G{color:#1f78b4}span.cd-B{color:#a86b12}span.cd-S{color:#6b7280}
 .pcd span,.cdbox span[class^="cd-"]{font-weight:800;margin-right:2px}.cdov{color:var(--chong)!important;text-decoration:underline}
 .cdwarn{color:var(--chong);font-weight:700;margin-top:2px}.cdbox{border:1px dashed var(--ln);border-radius:8px;padding:6px 8px;margin:8px 0;font-size:13px}
 .dzx{grid-column:1/-1;min-width:0;border:1px solid var(--ln);border-top:4px solid var(--chong);border-radius:10px;padding:12px}
@@ -153,7 +153,7 @@ span.cd-A{color:#6b5bd2}span.cd-B{color:#d2691e}span.cd-C{color:#2e8b57}span.cd-
     <div class="small" id="dlabel"></div>
     <div class="pillar" id="pillar"></div>
     <div class="small" id="basenote"></div>
-    <div class="small">球下面細字＝該號碼嘅組合（例：沖+煞、沖+年頭、日尾）。號碼外圈：<span class="nw">玫瑰色＝尾生頭</span>、<span class="nt2">啡金色＝頭生尾</span>　<span class="mkt st">★</span>＝日肖＋尾生頭 或 年肖＋頭生尾　<span class="mkt x">✕</span>＝歲煞＋尾生頭　球右下字母＝代號（1=A 2=B 3=C 4=D 5=E 6=A…）</div>
+    <div class="small">球下面細字＝該號碼嘅組合（例：沖+煞、沖+年頭、日尾）。號碼外圈：<span class="nw">玫瑰色＝尾生頭</span>、<span class="nt2">啡金色＝頭生尾</span>　<span class="mkt st">★</span>＝日肖＋尾生頭 或 年肖＋頭生尾　<span class="mkt x">✕</span>＝歲煞＋尾生頭　球右下字母＝代號（H 頭剋尾、L 尾生頭、G 尾剋頭、B 頭生尾、S 同類）</div>
   </div>
   <div class="swin"><span class="small">統計期數</span><div class="seg" id="swin"><button data-v="20" class="on">近 20 期</button><button data-v="50">50</button><button data-v="100">100</button><button data-v="300">300</button><button data-v="9999">全部</button></div><span class="small" id="swinfo"></span></div>
   <div class="grps" id="grps"></div>
@@ -261,10 +261,12 @@ function renderNext(n){
 function pad(n){return n<10?"0"+n:""+n}
 var WD="日一二三四五六";
 function shaOf(b){return [8,0,4].indexOf(b)>-1?{d:"南",t:[2,7]}:[5,9,1].indexOf(b)>-1?{d:"東",t:[3,8]}:[2,6,10].indexOf(b)>-1?{d:"北",t:[1,6]}:{d:"西",t:[4,9]}}
-/* 代號：1=A 2=B 3=C 4=D 5=E 6=A …（即尾數 1/6=A、2/7=B、3/8=C、4/9=D、5/0=E） */
-var CDS="ABCDE",CDMAX=3;/* 揀號碼時同一代號最多 3 個 */function cd(n){return CDS[(n-1)%5]}
-function cdb(n){return '<i class="cdl cd-'+cd(n)+'">'+cd(n)+'</i>'}
-function cdc(t){var c={A:0,B:0,C:0,D:0,E:0};t.forEach(function(n){c[cd(n)]++});return c}
+/* 代號（字頭字尾五行生剋，河圖：1/6水 2/7火 3/8木 4/9金 5/0土）：
+   H＝頭剋尾　L＝尾生頭　G＝尾剋頭　B＝頭生尾　S＝同類 */
+var CDS="HLGBS",CDMAX=3,CDN={H:"頭剋尾",L:"尾生頭",G:"尾剋頭",B:"頭生尾",S:"同類"};/* 揀號碼時同一代號通常最多 3 個 */
+function cd(n){var h=WXE[Math.floor(n/10)],t=WXE[n%10];if(h===t)return "S";if(mod(h+1,5)===t)return "B";if(mod(t+1,5)===h)return "L";if(mod(h+2,5)===t)return "H";return "G"}
+function cdb(n){return '<i class="cdl cd-'+cd(n)+'" title="'+CDN[cd(n)]+'">'+cd(n)+'</i>'}
+function cdc(t){var c={H:0,L:0,G:0,B:0,S:0};t.forEach(function(n){c[cd(n)]++});return c}
 function cdmax(t){var c=cdc(t),m=0;for(var k in c)if(c[k]>m)m=c[k];return m}
 function cdstr(t){var c=cdc(t);return CDS.split("").filter(function(k){return c[k]}).map(function(k){return '<span class="cd-'+k+(c[k]>CDMAX?' cdov':'')+'">'+k+c[k]+'</span>'}).join(" ")}
 function B(n,o){o=o||{};return '<span class="n '+col(n)+(o.L?' L':'')+(o.rg?' rg-'+o.rg:'')+(o.dim?' dim':'')+'">'+pad(n)+(o.ck?'<u class="ck">✓</u>':'')+(o.mk||'')+(o.L?cdb(n):'')+'</span>'}
@@ -433,7 +435,7 @@ function renderPick(){
     var hd={};HRES.forEach(function(x){var m=cdmax(x.r.b);hd[m]=(hd[m]||0)+1});
     var bd={};bets.forEach(function(t){var m=cdmax(t);bd[m]=(bd[m]||0)+1});
     var fmt=function(d,tot){return Object.keys(d).map(Number).sort().map(function(m){return '<span class="'+(m>CDMAX?'cdov':'')+'">最多 '+m+' 個同代號 ×'+d[m]+(tot?'（'+(d[m]/tot*100).toFixed(0)+'%）':'')+'</span>'}).join("　")};
-    h+='<div class="cdbox"><strong>代號</strong>（1=A 2=B 3=C 4=D 5=E 6=A…）揀咗：'+cdstr(all)
+    h+='<div class="cdbox"><strong>代號</strong>（H 頭剋尾、L 尾生頭、G 尾剋頭、B 頭生尾、S 同類）揀咗：'+cdstr(all)
       +(function(){var c=cdc(all),ov=CDS.split("").filter(function(k){return c[k]>CDMAX});
         return ov.length?'<div class="cdwarn">⚠ '+ov.map(function(k){return '代號 '+k+' 揀咗 '+c[k]+' 個（'+all.filter(function(n){return cd(n)===k}).sort(function(a,b){return a-b}).map(pad).join("、")+'）'}).join("；")+'，通常同一代號最多 '+CDMAX+' 個</div>'
           :'<div class="small">✓ 每個代號都冇超過 '+CDMAX+' 個（通常最多 '+CDMAX+' 個）</div>'})()
