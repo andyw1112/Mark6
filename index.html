@@ -343,7 +343,7 @@ function heroStats(){
   function bl(arr){return '<div class="gb">'+arr.map(function(n){var L=lab(n,C),w=wxc(n);return '<span class="bw" draggable="true" data-pk="'+n+'">'+'<span class="n '+col(n)+(w?' wx-'+w:'')+'">'+pad(n)+mkb(n,C)+cdb(n)+'</span><span class="cbl">'+(L.k>1?L.t.split("+").join("<br>"):"&nbsp;")+'</span></span>'}).join("")+'</div>'}
   function sub(tag,cls,name,arr){return '<div class="gsub"><span class="tag '+cls+'">'+tag+'</span><b>'+name+'</b> <span class="small">'+arr.length+' 個</span></div>'+bl(arr)}
   var body={
-   1:sub("沖","t-c",zn(HP.c.z),HP.c.n)+sub("合","t-h",zn(HP.h.z),HP.h.n)+($("san").checked?sub("三合","t-s",zn(HP.s.z),HP.s.n):""),
+   1:sub("沖","t-c",zn(HP.c.z),HP.c.n)+sub("合","t-h",zn(HP.h.z),HP.h.n)+($("san").checked?HP.s.z.map(function(z){return sub("三合","t-s",Z[z],nums(z,yb))}).join(""):""),
    2:sub("日肖","t-d",Z[B0.p.br]+"日",C.D)+sub("年肖","t-y",Z[yb]+"年",C.Y),
    3:sub("歲煞","t-k","煞"+sg.d+"（尾 "+sg.t.join("、")+"）",S),
    4:sub("尾生頭","t-w","字尾生字頭",WSN)+sub("頭生尾","t-t","字頭生字尾",TSN)};
