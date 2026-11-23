@@ -496,7 +496,7 @@ document.addEventListener("drop",function(e){var z=e.target.closest&&e.target.cl
 function rbody(x,top){
   var r=x.r,sh=x.sg;
   var zm=dzm(x.pl.stem);
-  function hwtag(n){var e=hwx(n),l=e===zm.ke?'剋我'+e:e===zm.ko?'我剋'+e:e===zm.me?'主'+e:e;return '<em class="tk hwt hw-'+e+'" title="字頭五行">'+l+'</em>'}
+  function hwtag(n){var e=hwx(n),l=e;return '<em class="tk hwt hw-'+e+'" title="字頭五行">'+l+'</em>'}
   function tg(n){var t="";if(x.D.indexOf(n)>-1)t+='<em class="tk d">日</em>';if(x.Y.indexOf(n)>-1)t+='<em class="tk y">年</em>';if(x.SN.indexOf(n)>-1)t+='<em class="tk s">煞</em>';var w=wxc(n);if(w)t+='<em class="tk '+w+'">'+(w==="w"?"尾":"頭")+'</em>';return '<span class="tg">'+t+'</span>'}
   function ball(n){var on=x.P.all.indexOf(n)>-1||x.D.indexOf(n)>-1||x.Y.indexOf(n)>-1,w=wxc(n);var mc={D:x.D,Y:x.Y,S:x.SN},mf=mkf(n,mc);return '<span class="bw">'+B(n,{L:1,rg:on?"g":w,ck:on,dim:!on&&!w&&!mf.st&&!mf.x,mk:mkb(n,mc)})+'<span class="tg">'+hwtag(n)+'</span>'+tg(n)+'</span>'}
   function lst(a,sp){var mc={D:x.D,Y:x.Y,S:x.SN};return a.length?a.map(function(n){return pad(n)+'('+(sp&&n===r.sp?'特':Z[mod(x.yb-(n-1),12)])+')'+mkt(n,mc)}).join(", "):"無"}
@@ -514,7 +514,7 @@ function rc(x){
   return '<div class="row"><h2 style="margin:0">上期 '+r.iss+'（'+r.date+'）實際結果</h2><span style="font-size:17px;font-weight:700">'+x.pl.txt+'日（'+Z[x.pl.br]+'）</span><span class="small">'+dzmTxt(x.pl,r.b)+'</span><span class="small">單雙 '+odd+':'+(6-odd)+' · 和值 '+sum+(sum<150?' 小':' 大')+' · 字頭五行 '+hwstr(r.b)+(r.note?' · '+r.note:'')+'</span></div>'
   +'<div class="rowb"><span class="chip g">沖合池中左 '+x.all.length+' 球</span><span class="chip c">沖中 '+x.c.length+'</span><span class="chip h">合中 '+x.h.length+'</span><span class="chip s">三合中 '+x.s.length+'</span><span class="chip d">日肖中 '+x.day7.length+'</span><span class="chip y">年肖中 '+x.yr7.length+'</span><span class="chip k">歲煞中 '+x.sha7.length+'</span><span class="chip w">尾生頭中 '+x.ws7.length+'</span><span class="chip t">頭生尾中 '+x.ts7.length+'</span><span class="chip nt"><span class="mkt st">★</span> 中 '+x.d.filter(function(n){return mkf(n,{D:x.D,Y:x.Y,S:x.SN}).st}).length+'</span><span class="chip nt"><span class="mkt x">✕</span> 中 '+x.d.filter(function(n){return mkf(n,{D:x.D,Y:x.Y,S:x.SN}).x}).length+'</span></div>'
   +rbody(x,true)+'<div class="ln"><span class="chip nt">組合</span>'+cmbs(x)+'</div>'}
-var LEGEND='<div class="ln small" style="margin-top:10px">球下五行：字頭五行（01–09 土、10–19 水、20–29 火、30–39 木、40–49 金）；「剋我」＝剋日主、「我剋」＝日主剋、「主」＝同日主　球上標記：<em class="tk d">日</em> 當日生肖　<em class="tk y">年</em> 年生肖　<em class="tk s">煞</em> 歲煞尾數　<em class="tk w">尾</em> 尾生頭　<em class="tk t">頭</em> 頭生尾　<span class="mkt st">★</span> 日肖＋尾生頭　<span class="mkt x">✕</span> 歲煞＋尾生頭（各組獨立計；沖／合／三合命中只計 6 個正選號碼，日肖／年肖／歲煞／尾生頭／頭生尾連特別號碼一齊計）</div>';
+var LEGEND='<div class="ln small" style="margin-top:10px">球下五行：字頭五行（01–09 土、10–19 水、20–29 火、30–39 木、40–49 金）　球上標記：<em class="tk d">日</em> 當日生肖　<em class="tk y">年</em> 年生肖　<em class="tk s">煞</em> 歲煞尾數　<em class="tk w">尾</em> 尾生頭　<em class="tk t">頭</em> 頭生尾　<span class="mkt st">★</span> 日肖＋尾生頭　<span class="mkt x">✕</span> 歲煞＋尾生頭（各組獨立計；沖／合／三合命中只計 6 個正選號碼，日肖／年肖／歲煞／尾生頭／頭生尾連特別號碼一齊計）</div>';
 function lastRes(){
   var el=$("lastcard");
   if(!rows.length){el.innerHTML='<h2>上期實際結果</h2><p class="small">喺下面輸入開獎資料後撳「分析」，就會顯示上期結果同命中分析。</p>';return}
