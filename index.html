@@ -124,6 +124,10 @@ span.cd-H{color:#6b5bd2}span.cd-L{color:#d1477a}span.cd-G{color:#1f78b4}span.cd-
 .dzx h3{margin:0 0 2px;font-size:17px}.dzcur{border:1px dashed var(--ln);border-radius:8px;padding:8px;margin:6px 0 8px;font-size:13px;line-height:1.7}
 .cbk{border-top:1px dashed var(--ln);margin-top:6px;padding-top:4px}.cbh{font-size:13px}.cbk .cmn span b{color:var(--ink)}.cbk .cmn span.solo{background:rgba(127,127,127,.08)}
 .dzt{min-width:640px}.dzd summary{cursor:pointer;color:var(--mut);font-size:13px;padding:4px 0}.dzt td,.dzt th{text-align:center}.dzt tr.cur td{background:rgba(242,194,48,.14)}.dzt b.pos{color:var(--he)}.dzt b.neg{color:var(--chong)}
+.hwl{position:absolute;right:-6px;top:-6px;min-width:13px;height:13px;border-radius:50%;font:800 8.5px/13px sans-serif;font-style:normal;text-align:center;color:#fff;box-shadow:0 0 0 1px var(--sf);z-index:1}
+.hwl.hw-金{background:#b8860b}.hwl.hw-木{background:#2e8b57}.hwl.hw-水{background:#1f6fb4}.hwl.hw-火{background:#d0402b}.hwl.hw-土{background:#8a6d3b}
+span.hw-金{color:#b8860b}span.hw-木{color:#2e8b57}span.hw-水{color:#1f6fb4}span.hw-火{color:#d0402b}span.hw-土{color:#8a6d3b}
+.hws span,.pcd span[class^="hw-"]{font-weight:800;margin-right:2px}
 .disc{font-size:12px;color:var(--mut);border-top:1px solid var(--ln);padding-top:14px;margin-top:24px}
 </style>
 </head>
@@ -154,7 +158,7 @@ span.cd-H{color:#6b5bd2}span.cd-L{color:#d1477a}span.cd-G{color:#1f78b4}span.cd-
     <div class="small" id="dlabel"></div>
     <div class="pillar" id="pillar"></div>
     <div class="small" id="basenote"></div>
-    <div class="small">球下面細字＝該號碼嘅組合（例：沖+煞、沖+年頭、日尾）。號碼外圈：<span class="nw">玫瑰色＝尾生頭</span>、<span class="nt2">啡金色＝頭生尾</span>　<span class="mkt st">★</span>＝日肖＋尾生頭　<span class="mkt x">✕</span>＝歲煞＋尾生頭　球右下字母＝代號（H 頭剋尾、L 尾生頭、G 尾剋頭、B 頭生尾、S 同類）</div>
+    <div class="small">球下面細字＝該號碼嘅組合（例：沖+煞、沖+年頭、日尾）。號碼外圈：<span class="nw">玫瑰色＝尾生頭</span>、<span class="nt2">啡金色＝頭生尾</span>　<span class="mkt st">★</span>＝日肖＋尾生頭　<span class="mkt x">✕</span>＝歲煞＋尾生頭　球右下字母＝代號（H 頭剋尾、L 尾生頭、G 尾剋頭、B 頭生尾、S 同類）　球右上圓點＝字頭五行（01–09 土、10–19 水、20–29 火、30–39 木、40–49 金）</div>
   </div>
   <div class="swin"><span class="small">統計期數</span><div class="seg" id="swin"><button data-v="20" class="on">近 20 期</button><button data-v="50">50</button><button data-v="100">100</button><button data-v="300">300</button><button data-v="9999">全部</button></div><span class="small" id="swinfo"></span></div>
   <div class="grps" id="grps"></div>
@@ -250,7 +254,7 @@ function render(){
   HP=P;
   ring(B.b,P);
   var g="";for(var n=1;n<=49;n++){var k=P.c.n.indexOf(n)>-1?"c":P.h.n.indexOf(n)>-1?"h":($("san").checked&&P.s.n.indexOf(n)>-1)?"s":"";
-    g+='<div class="cell '+k+'"><span class="n '+col(n)+'">'+(n<10?"0"+n:n)+mkb(n)+cdb(n)+'</span>'+Z[mod(yearOf()-(n-1),12)]+(wxc(n)==="w"?'<span class="wxl nw">尾生頭</span>':wxc(n)==="t"?'<span class="wxl nt2">頭生尾</span>':'')+'</div>'}
+    g+='<div class="cell '+k+'"><span class="n '+col(n)+'">'+(n<10?"0"+n:n)+mkb(n)+cdb(n)+hwb(n)+'</span>'+Z[mod(yearOf()-(n-1),12)]+(wxc(n)==="w"?'<span class="wxl nw">尾生頭</span>':wxc(n)==="t"?'<span class="wxl nt2">頭生尾</span>':'')+'</div>'}
   $("g49").innerHTML=g;heroStats();backtest()}
 var NEXT={"issue": "26/124", "date": "2026-11-24", "cutoff": "21:15", "jackpot": 68000000, "snowball": 50000000, "snowballName": "幸運二金多寶", "note": "集氣加碼：按 11-23 下午 2 時累積投注額定。不足 6,000 萬→金多寶 5,000 萬／頭獎 6,800 萬；6,000–7,000 萬→5,500 萬／7,300 萬；7,000 萬或以上→6,000 萬／8,000 萬。11-21（六）停攪一次。", "manual": true, "updated": "2026-11-19"};
 function renderNext(n){
@@ -266,6 +270,10 @@ function shaOf(b){return [8,0,4].indexOf(b)>-1?{d:"南",t:[2,7]}:[5,9,1].indexOf
    H＝頭剋尾　L＝尾生頭　G＝尾剋頭　B＝頭生尾　S＝同類 */
 var CDS="HLGBS",CDMAX=3,CDN={H:"頭剋尾",L:"尾生頭",G:"尾剋頭",B:"頭生尾",S:"同類"};/* 揀號碼時同一代號通常最多 3 個 */
 function cd(n){var h=WXE[Math.floor(n/10)],t=WXE[n%10];if(h===t)return "S";if(mod(h+1,5)===t)return "B";if(mod(t+1,5)===h)return "L";if(mod(h+2,5)===t)return "H";return "G"}
+/* 字頭五行（河圖：0 土、1 水、2 火、3 木、4 金 → 01–09 土、10–19 水、20–29 火、30–39 木、40–49 金） */
+var HWO="金木水火土";function hwx(n){return "土水火木金"[Math.floor(n/10)]}
+function hwb(n){return '<i class="hwl hw-'+hwx(n)+'" title="字頭五行">'+hwx(n)+'</i>'}
+function hwstr(t){var c={};t.forEach(function(n){var e=hwx(n);c[e]=(c[e]||0)+1});return HWO.split("").filter(function(e){return c[e]}).map(function(e){return '<span class="hw-'+e+'">'+e+c[e]+'</span>'}).join(" ")}
 function cdb(n){return '<i class="cdl cd-'+cd(n)+'" title="'+CDN[cd(n)]+'">'+cd(n)+'</i>'}
 function cdc(t){var c={H:0,L:0,G:0,B:0,S:0};t.forEach(function(n){c[cd(n)]++});return c}
 function cdmax(t){var c=cdc(t),m=0;for(var k in c)if(c[k]>m)m=c[k];return m}
@@ -340,7 +348,7 @@ function heroStats(){
   var res=rows.slice(0,SWIN).map(function(r,i){return calc(r,i)}),NN=res.length,TH=Math.max(2,Math.floor(NN/10));
   if(res.length)$("swinfo").textContent="（"+res[res.length-1].r.iss+" 至 "+res[0].r.iss+"，共 "+NN+" 期）";
   HC=C;SWN=NN;HRES=res;GMAX=GRP.map(function(G){var m=0;res.forEach(function(x){var c=ctxOf(x),k=x.r.b.filter(function(n){return G.in(n,c)}).length;if(k>m)m=k});return res.length?m:null});
-  function bl(arr){return '<div class="gb">'+arr.map(function(n){var L=lab(n,C),w=wxc(n);return '<span class="bw" draggable="true" data-pk="'+n+'">'+'<span class="n '+col(n)+(w?' wx-'+w:'')+'">'+pad(n)+mkb(n,C)+cdb(n)+'</span><span class="cbl">'+(L.k>1?L.t.split("+").join("<br>"):"&nbsp;")+'</span></span>'}).join("")+'</div>'}
+  function bl(arr){return '<div class="gb">'+arr.map(function(n){var L=lab(n,C),w=wxc(n);return '<span class="bw" draggable="true" data-pk="'+n+'">'+'<span class="n '+col(n)+(w?' wx-'+w:'')+'">'+pad(n)+mkb(n,C)+cdb(n)+hwb(n)+'</span><span class="cbl">'+(L.k>1?L.t.split("+").join("<br>"):"&nbsp;")+'</span></span>'}).join("")+'</div>'}
   function sub(tag,cls,name,arr){return '<div class="gsub"><span class="tag '+cls+'">'+tag+'</span><b>'+name+'</b> <span class="small">'+arr.length+' 個</span></div>'+bl(arr)}
   var body={
    1:sub("沖","t-c",zn(HP.c.z),HP.c.n)+sub("合","t-h",zn(HP.h.z),HP.h.n)+($("san").checked?HP.s.z.map(function(z){return sub("三合","t-s",Z[z],nums(z,yb))}).join(""):""),
@@ -417,7 +425,7 @@ function setSel(n,m){n=+n;if(!(n>=1&&n<=49))return;
 function combs(a,k){var o=[],c=[];(function r(i){if(c.length===k){o.push(c.slice());return}for(var j=i;j<a.length;j++){c.push(a[j]);r(j+1);c.pop()}})(0);return o}
 function gcnt(t){return GRP.map(function(G){return t.filter(function(n){return G.in(n,HC)}).length})}
 function gcls(i,k){var G=GRP[i];if(GMAX[i]!=null&&k>GMAX[i])return "ov";return k>=G.rg[0]&&k<=G.rg[1]?"okk":""}
-function sball(n,cls){var L=lab(n,HC);return '<span class="bw" draggable="true" data-pk="'+n+'"><span class="n '+col(n)+(cls?' '+cls:'')+'">'+pad(n)+mkb(n,HC)+cdb(n)+'</span><span class="cbl">'+(L.t?L.t.split("+").join("<br>"):"&nbsp;")+'</span></span>'}
+function sball(n,cls){var L=lab(n,HC);return '<span class="bw" draggable="true" data-pk="'+n+'"><span class="n '+col(n)+(cls?' '+cls:'')+'">'+pad(n)+mkb(n,HC)+cdb(n)+hwb(n)+'</span><span class="cbl">'+(L.t?L.t.split("+").join("<br>"):"&nbsp;")+'</span></span>'}
 function renderPick(){
   var el=$("pick");if(!el||!HC)return;
   var Bk=[],Lg=[];for(var n=1;n<=49;n++){if(SEL[n]==="b")Bk.push(n);else if(SEL[n]==="l")Lg.push(n)}
@@ -426,7 +434,7 @@ function renderPick(){
    +'<div class="dz" data-dz="b"><b>膽（'+Bk.length+'）</b>'+(Bk.length?Bk.map(function(n){return sball(n,"pb")}).join(""):'<span class="small">拉號碼入嚟或者揀「揀膽」再㩒號碼</span>')+'</div>'
    +'<div class="dz" data-dz="l"><b>腳（'+Lg.length+'）</b>'+(Lg.length?Lg.map(function(n){return sball(n,"pl")}).join(""):'<span class="small">拉號碼入嚟或者揀「揀腳」再㩒號碼</span>')+'</div>'
    +'<div class="pg">';
-  for(n=1;n<=49;n++)h+='<span class="n '+col(n)+(SEL[n]==="b"?" pb":SEL[n]==="l"?" pl":"")+'" data-pk="'+n+'" draggable="true">'+pad(n)+cdb(n)+'</span>';
+  for(n=1;n<=49;n++)h+='<span class="n '+col(n)+(SEL[n]==="b"?" pb":SEL[n]==="l"?" pl":"")+'" data-pk="'+n+'" draggable="true">'+pad(n)+cdb(n)+hwb(n)+'</span>';
   h+='</div>';
   var need=6-Bk.length,bets=[],note="";
   if(!Bk.length){if(Lg.length>=6){bets=combs(Lg,6);note=Lg.length===6?"單式 1 注":"複式 "+Lg.length+" 個號碼 → "+bets.length+" 注"}else note="未夠 6 個號碼（而家 "+Lg.length+" 個）"}
@@ -459,9 +467,9 @@ function renderPick(){
     var good=bets.filter(function(t){var g=gcnt(t);return g.every(function(k,i){return k>=GRP[i].rg[0]&&k<=GRP[i].rg[1]})}).length;
     h+='<div class="small">4 組全部符合「通常」嘅注數：<strong>'+good+'/'+bets.length+'</strong>　<span class="okk">綠＝符合通常</span>　<span class="ov">紅＝超過近 '+SWN+' 期最多</span></div>';
     var show=bets.slice(0,200);
-    h+='<div class="tw"><table class="ptb"><thead><tr><th>#</th><th>號碼</th><th>沖合三合</th><th>日年肖</th><th>歲煞</th><th>尾頭</th><th>代號</th><th>單:雙</th><th>總數</th></tr></thead><tbody>'
+    h+='<div class="tw"><table class="ptb"><thead><tr><th>#</th><th>號碼</th><th>沖合三合</th><th>日年肖</th><th>歲煞</th><th>尾頭</th><th>代號</th><th>字頭五行</th><th>單:雙</th><th>總數</th></tr></thead><tbody>'
      +show.map(function(t,i){var g=gcnt(t),o=t.filter(function(n){return n%2}).length,sm=t.reduce(function(a,b){return a+b},0);
-       return '<tr><td>'+(i+1)+'</td><td class="pn">'+t.map(function(n){return '<span class="n '+col(n)+(SEL[n]==="b"?" pb":"")+'">'+pad(n)+'</span>'}).join("")+'</td>'+g.map(function(k,j){return '<td class="num '+gcls(j,k)+'">'+k+'</td>'}).join("")+'<td class="pcd">'+cdstr(t)+'</td><td>'+o+':'+(6-o)+'</td><td>'+sm+(sm<150?" 小":" 大")+'</td></tr>'}).join("")
+       return '<tr><td>'+(i+1)+'</td><td class="pn">'+t.map(function(n){return '<span class="n '+col(n)+(SEL[n]==="b"?" pb":"")+'">'+pad(n)+'</span>'}).join("")+'</td>'+g.map(function(k,j){return '<td class="num '+gcls(j,k)+'">'+k+'</td>'}).join("")+'<td class="pcd">'+cdstr(t)+'</td><td class="pcd">'+hwstr(t)+'</td><td>'+o+':'+(6-o)+'</td><td>'+sm+(sm<150?" 小":" 大")+'</td></tr>'}).join("")
      +'</tbody></table></div>'+(bets.length>200?'<p class="small">只顯示頭 200 注</p>':'');
   }
   el.innerHTML=h+'</div>'}
@@ -486,7 +494,7 @@ function rbody(x,top){
 function rc(x){
   var r=x.r;
   var odd=r.b.filter(function(n){return n%2}).length,sum=r.b.reduce(function(p,q){return p+q},0);
-  return '<div class="row"><h2 style="margin:0">上期 '+r.iss+'（'+r.date+'）實際結果</h2><span style="font-size:17px;font-weight:700">'+x.pl.txt+'日（'+Z[x.pl.br]+'）</span><span class="small">單雙 '+odd+':'+(6-odd)+' · 和值 '+sum+(sum<150?' 小':' 大')+(r.note?' · '+r.note:'')+'</span></div>'
+  return '<div class="row"><h2 style="margin:0">上期 '+r.iss+'（'+r.date+'）實際結果</h2><span style="font-size:17px;font-weight:700">'+x.pl.txt+'日（'+Z[x.pl.br]+'）</span><span class="small">單雙 '+odd+':'+(6-odd)+' · 和值 '+sum+(sum<150?' 小':' 大')+' · 字頭五行 '+hwstr(r.b)+(r.note?' · '+r.note:'')+'</span></div>'
   +'<div class="rowb"><span class="chip g">沖合池中左 '+x.all.length+' 球</span><span class="chip c">沖中 '+x.c.length+'</span><span class="chip h">合中 '+x.h.length+'</span><span class="chip s">三合中 '+x.s.length+'</span><span class="chip d">日肖中 '+x.day7.length+'</span><span class="chip y">年肖中 '+x.yr7.length+'</span><span class="chip k">歲煞中 '+x.sha7.length+'</span><span class="chip w">尾生頭中 '+x.ws7.length+'</span><span class="chip t">頭生尾中 '+x.ts7.length+'</span><span class="chip nt"><span class="mkt st">★</span> 中 '+x.d.filter(function(n){return mkf(n,{D:x.D,Y:x.Y,S:x.SN}).st}).length+'</span><span class="chip nt"><span class="mkt x">✕</span> 中 '+x.d.filter(function(n){return mkf(n,{D:x.D,Y:x.Y,S:x.SN}).x}).length+'</span></div>'
   +rbody(x,true)+'<div class="ln"><span class="chip nt">組合</span>'+cmbs(x)+'</div>'}
 var LEGEND='<div class="ln small" style="margin-top:10px">球上標記：<em class="tk d">日</em> 當日生肖　<em class="tk y">年</em> 年生肖　<em class="tk s">煞</em> 歲煞尾數　<em class="tk w">尾</em> 尾生頭　<em class="tk t">頭</em> 頭生尾　<span class="mkt st">★</span> 日肖＋尾生頭　<span class="mkt x">✕</span> 歲煞＋尾生頭（各組獨立計；沖／合／三合命中只計 6 個正選號碼，日肖／年肖／歲煞／尾生頭／頭生尾連特別號碼一齊計）</div>';
@@ -533,7 +541,7 @@ function backtest(){
     var r=x.r,wd=WD[new Date(+r.date.slice(0,4),+r.date.slice(5,7)-1,+r.date.slice(8)).getDay()],odd=r.b.filter(function(n){return n%2}).length,sum=r.b.reduce(function(p,q){return p+q},0),df=x.all.length-x.exp;
     h+='<tr><td>'+(i+1)+'</td><td><strong>'+r.iss+'</strong></td><td>'+r.date+'（'+wd+'）</td><td><span class="pill">'+x.pl.txt+'</span><div>'+Z[x.pl.br]+'日</div></td>'
     +'<td class="rb">'+rbody(x)+'</td>'
-    +'<td><strong style="color:var(--chong)">'+odd+'</strong>:<strong style="color:var(--b)">'+(6-odd)+'</strong><div class="small">'+sum+(sum<150?" 小":" 大")+'</div></td><td class="small">'+(r.note||"—")+'</td>'
+    +'<td><strong style="color:var(--chong)">'+odd+'</strong>:<strong style="color:var(--b)">'+(6-odd)+'</strong><div class="small">'+sum+(sum<150?" 小":" 大")+'</div><div class="small hws">'+hwstr(r.b)+'</div></td><td class="small">'+(r.note||"—")+'</td>'
     +'<td class="num grp">'+x.all.length+'<div class="gs"><span class="neg">沖'+x.c.length+'</span> <span class="pos">合'+x.h.length+'</span> <span style="color:var(--san)">三'+x.s.length+'</span></div></td>'
     +'<td class="num grp">'+x.dy.length+'<div class="gs"><span style="color:#e0651a">日'+x.day.length+'</span> <span style="color:#3b7be0">年'+x.yr.length+'</span></div></td>'
     +'<td class="num grp" style="color:#3a9a78">'+x.sha.length+'<div class="gs">尾 '+x.sg.t.join("、")+'</div></td>'
