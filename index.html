@@ -128,6 +128,7 @@ span.cd-H{color:#6b5bd2}span.cd-L{color:#d1477a}span.cd-G{color:#1f78b4}span.cd-
 .hwl.hw-金{background:#b8860b}.hwl.hw-木{background:#2e8b57}.hwl.hw-水{background:#1f6fb4}.hwl.hw-火{background:#d0402b}.hwl.hw-土{background:#8a6d3b}
 span.hw-金{color:#b8860b}span.hw-木{color:#2e8b57}span.hw-水{color:#1f6fb4}span.hw-火{color:#d0402b}span.hw-土{color:#8a6d3b}
 .hws span,.pcd span[class^="hw-"]{font-weight:800;margin-right:2px}
+.dzm{font-size:14px;margin-top:6px}.dzm b,.dzs span{font-weight:800}.dzs{white-space:nowrap}
 .disc{font-size:12px;color:var(--mut);border-top:1px solid var(--ln);padding-top:14px;margin-top:24px}
 </style>
 </head>
@@ -158,6 +159,7 @@ span.hw-金{color:#b8860b}span.hw-木{color:#2e8b57}span.hw-水{color:#1f6fb4}sp
     <div class="small" id="dlabel"></div>
     <div class="pillar" id="pillar"></div>
     <div class="small" id="basenote"></div>
+    <div class="dzm" id="dzm"></div>
     <div class="small">球下面細字＝該號碼嘅組合（例：沖+煞、沖+年頭、日尾）。號碼外圈：<span class="nw">玫瑰色＝尾生頭</span>、<span class="nt2">啡金色＝頭生尾</span>　<span class="mkt st">★</span>＝日肖＋尾生頭　<span class="mkt x">✕</span>＝歲煞＋尾生頭　球右下字母＝代號（H 頭剋尾、L 尾生頭、G 尾剋頭、B 頭生尾、S 同類）　球右上圓點＝字頭五行（01–09 土、10–19 水、20–29 火、30–39 木、40–49 金）</div>
   </div>
   <div class="swin"><span class="small">統計期數</span><div class="seg" id="swin"><button data-v="20" class="on">近 20 期</button><button data-v="50">50</button><button data-v="100">100</button><button data-v="300">300</button><button data-v="9999">全部</button></div><span class="small" id="swinfo"></span></div>
@@ -213,6 +215,11 @@ var mode="pillar",win=20,rows=[];
 function col(n){return RED.indexOf(n)>-1?"r":BLUE.indexOf(n)>-1?"b":"g"}
 function mod(a,m){return((a%m)+m)%m}
 function jdn(y,m,d){var a=Math.floor((14-m)/12),yy=y+4800-a,mm=m+12*a-3;return d+Math.floor((153*mm+2)/5)+365*yy+Math.floor(yy/4)-Math.floor(yy/100)+Math.floor(yy/400)-32045}
+/* 日主（日干五行）、剋日主、日主剋；開獎時間 21:30 亥時 → 時柱 */
+var WXN="木火土金水",HWR={土:"01–09",水:"10–19",火:"20–29",木:"30–39",金:"40–49"};
+function dzm(stem){var e=Math.floor(stem/2);return{st:ST[stem],me:WXN[e],ke:WXN[mod(e-2,5)],ko:WXN[mod(e+2,5)],hr:ST[mod((stem%5)*2+11,10)]+"亥"}}
+function dzmTxt(p,b){var z=dzm(p.stem),hs=b?b.map(hwx):null,f=function(e){return '<b class="hw-'+e+'">'+e+'</b>'+(hs?(hs.indexOf(e)>-1?'✓':'✗'):'')};
+  return '日主 <b class="hw-'+z.me+'">'+z.st+z.me+'</b>　剋日主 '+f(z.ke)+'　日主剋 '+f(z.ko)}
 function pillar(s){var p=s.split("-").map(Number),i=mod(jdn(p[0],p[1],p[2])-2451545+54,60);return{stem:i%10,br:i%12,txt:ST[i%10]+BR[i%12]}}
 function nums(br,yb){var o=[];for(var n=1;n<=49;n++)if(mod(yb-(n-1),12)===br)o.push(n);return o}
 function pools(base,yb,withSan){
@@ -251,6 +258,7 @@ function render(){
   var B=baseFor(ds),P=pools(B.b,yearOf(),$("san").checked);
   (function(){var y=yearOf(),g=shaOf(B.p.br),S=[];for(var q=1;q<=49;q++)if(g.t.indexOf(q%10)>-1)S.push(q);CUR={D:nums(B.p.br,y),Y:nums(y,y),S:S}})();
   $("dlabel").textContent=ds+" 日柱";$("pillar").textContent=B.p.txt+"日";$("basenote").textContent=B.note;
+  (function(){var z=dzm(B.p.stem);$("dzm").innerHTML='時柱 '+z.hr+'（21:30）　日主 <b class="hw-'+z.me+'">'+z.st+z.me+'</b>　剋日主 <b class="hw-'+z.ke+'">'+z.ke+'</b>（字頭 '+HWR[z.ke]+'）　日主剋 <b class="hw-'+z.ko+'">'+z.ko+'</b>（字頭 '+HWR[z.ko]+'）'})();
   HP=P;
   ring(B.b,P);
   var g="";for(var n=1;n<=49;n++){var k=P.c.n.indexOf(n)>-1?"c":P.h.n.indexOf(n)>-1?"h":($("san").checked&&P.s.n.indexOf(n)>-1)?"s":"";
@@ -494,7 +502,7 @@ function rbody(x,top){
 function rc(x){
   var r=x.r;
   var odd=r.b.filter(function(n){return n%2}).length,sum=r.b.reduce(function(p,q){return p+q},0);
-  return '<div class="row"><h2 style="margin:0">上期 '+r.iss+'（'+r.date+'）實際結果</h2><span style="font-size:17px;font-weight:700">'+x.pl.txt+'日（'+Z[x.pl.br]+'）</span><span class="small">單雙 '+odd+':'+(6-odd)+' · 和值 '+sum+(sum<150?' 小':' 大')+' · 字頭五行 '+hwstr(r.b)+(r.note?' · '+r.note:'')+'</span></div>'
+  return '<div class="row"><h2 style="margin:0">上期 '+r.iss+'（'+r.date+'）實際結果</h2><span style="font-size:17px;font-weight:700">'+x.pl.txt+'日（'+Z[x.pl.br]+'）</span><span class="small">'+dzmTxt(x.pl,r.b)+'</span><span class="small">單雙 '+odd+':'+(6-odd)+' · 和值 '+sum+(sum<150?' 小':' 大')+' · 字頭五行 '+hwstr(r.b)+(r.note?' · '+r.note:'')+'</span></div>'
   +'<div class="rowb"><span class="chip g">沖合池中左 '+x.all.length+' 球</span><span class="chip c">沖中 '+x.c.length+'</span><span class="chip h">合中 '+x.h.length+'</span><span class="chip s">三合中 '+x.s.length+'</span><span class="chip d">日肖中 '+x.day7.length+'</span><span class="chip y">年肖中 '+x.yr7.length+'</span><span class="chip k">歲煞中 '+x.sha7.length+'</span><span class="chip w">尾生頭中 '+x.ws7.length+'</span><span class="chip t">頭生尾中 '+x.ts7.length+'</span><span class="chip nt"><span class="mkt st">★</span> 中 '+x.d.filter(function(n){return mkf(n,{D:x.D,Y:x.Y,S:x.SN}).st}).length+'</span><span class="chip nt"><span class="mkt x">✕</span> 中 '+x.d.filter(function(n){return mkf(n,{D:x.D,Y:x.Y,S:x.SN}).x}).length+'</span></div>'
   +rbody(x,true)+'<div class="ln"><span class="chip nt">組合</span>'+cmbs(x)+'</div>'}
 var LEGEND='<div class="ln small" style="margin-top:10px">球上標記：<em class="tk d">日</em> 當日生肖　<em class="tk y">年</em> 年生肖　<em class="tk s">煞</em> 歲煞尾數　<em class="tk w">尾</em> 尾生頭　<em class="tk t">頭</em> 頭生尾　<span class="mkt st">★</span> 日肖＋尾生頭　<span class="mkt x">✕</span> 歲煞＋尾生頭（各組獨立計；沖／合／三合命中只計 6 個正選號碼，日肖／年肖／歲煞／尾生頭／頭生尾連特別號碼一齊計）</div>';
@@ -539,7 +547,7 @@ function backtest(){
   h+='<div class="ts" id="ts"><div id="tsi"></div></div><div class="tw" id="tw2"><table class="tbl2"><thead><tr><th>#</th><th>期數</th><th>開獎日</th><th>日柱</th><th>沖合號碼池／開獎號碼</th><th>單雙／和值</th><th>頭獎／金多寶</th><th>沖＋六合＋三合</th><th>日肖＋年肖</th><th>歲煞</th><th>尾生頭＋頭生尾</th><th>組合</th><th>隨機期望</th><th>對比期望</th></tr></thead><tbody>';
   res.forEach(function(x,i){
     var r=x.r,wd=WD[new Date(+r.date.slice(0,4),+r.date.slice(5,7)-1,+r.date.slice(8)).getDay()],odd=r.b.filter(function(n){return n%2}).length,sum=r.b.reduce(function(p,q){return p+q},0),df=x.all.length-x.exp;
-    h+='<tr><td>'+(i+1)+'</td><td><strong>'+r.iss+'</strong></td><td>'+r.date+'（'+wd+'）</td><td><span class="pill">'+x.pl.txt+'</span><div>'+Z[x.pl.br]+'日</div></td>'
+    h+='<tr><td>'+(i+1)+'</td><td><strong>'+r.iss+'</strong></td><td>'+r.date+'（'+wd+'）</td><td><span class="pill">'+x.pl.txt+'</span><div>'+Z[x.pl.br]+'日</div><div class="small dzs">'+(function(z,hs){var f=function(e){return '<span class="hw-'+e+'">'+e+'</span>'+(hs.indexOf(e)>-1?'✓':'✗')};return '主<span class="hw-'+z.me+'">'+z.me+'</span> 剋我'+f(z.ke)+' 我剋'+f(z.ko)})(dzm(x.pl.stem),r.b.map(hwx))+'</div></td>'
     +'<td class="rb">'+rbody(x)+'</td>'
     +'<td><strong style="color:var(--chong)">'+odd+'</strong>:<strong style="color:var(--b)">'+(6-odd)+'</strong><div class="small">'+sum+(sum<150?" 小":" 大")+'</div><div class="small hws">'+hwstr(r.b)+'</div></td><td class="small">'+(r.note||"—")+'</td>'
     +'<td class="num grp">'+x.all.length+'<div class="gs"><span class="neg">沖'+x.c.length+'</span> <span class="pos">合'+x.h.length+'</span> <span style="color:var(--san)">三'+x.s.length+'</span></div></td>'
