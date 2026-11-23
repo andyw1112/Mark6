@@ -129,6 +129,10 @@ span.cd-H{color:#6b5bd2}span.cd-L{color:#d1477a}span.cd-G{color:#1f78b4}span.cd-
 span.hw-金{color:#b8860b}span.hw-木{color:#2e8b57}span.hw-水{color:#1f6fb4}span.hw-火{color:#d0402b}span.hw-土{color:#8a6d3b}
 .hws span,.pcd span[class^="hw-"]{font-weight:800;margin-right:2px}
 .dzm{font-size:14px;margin-top:6px}.dzm b,.dzs span{font-weight:800}.dzs{white-space:nowrap}
+.tk.hwt{background:var(--sf);border:1.5px solid currentColor;font-weight:800;white-space:nowrap;width:auto!important;min-width:0;padding:0 3px;letter-spacing:-.03em}
+em.hw-金{color:#b8860b}em.hw-木{color:#2e8b57}em.hw-水{color:#1f6fb4}em.hw-火{color:#d0402b}em.hw-土{color:#8a6d3b}
+.chip.hwc{background:var(--sf);border:1.5px solid currentColor}.chip.hw-金{color:#b8860b}.chip.hw-木{color:#2e8b57}.chip.hw-水{color:#1f6fb4}.chip.hw-火{color:#d0402b}.chip.hw-土{color:#8a6d3b}
+b.hw-金{color:#b8860b}b.hw-木{color:#2e8b57}b.hw-水{color:#1f6fb4}b.hw-火{color:#d0402b}b.hw-土{color:#8a6d3b}
 .disc{font-size:12px;color:var(--mut);border-top:1px solid var(--ln);padding-top:14px;margin-top:24px}
 </style>
 </head>
@@ -491,21 +495,26 @@ document.addEventListener("dragleave",function(e){var z=e.target.closest&&e.targ
 document.addEventListener("drop",function(e){var z=e.target.closest&&e.target.closest("[data-dz]");if(!z)return;e.preventDefault();z.classList.remove("ovr");var n=e.dataTransfer.getData("text/plain");if(n)setSel(n,z.dataset.dz)});
 function rbody(x,top){
   var r=x.r,sh=x.sg;
+  var zm=dzm(x.pl.stem);
+  function hwtag(n){var e=hwx(n),l=e===zm.ke?'剋我'+e:e===zm.ko?'我剋'+e:e===zm.me?'主'+e:e;return '<em class="tk hwt hw-'+e+'" title="字頭五行">'+l+'</em>'}
   function tg(n){var t="";if(x.D.indexOf(n)>-1)t+='<em class="tk d">日</em>';if(x.Y.indexOf(n)>-1)t+='<em class="tk y">年</em>';if(x.SN.indexOf(n)>-1)t+='<em class="tk s">煞</em>';var w=wxc(n);if(w)t+='<em class="tk '+w+'">'+(w==="w"?"尾":"頭")+'</em>';return '<span class="tg">'+t+'</span>'}
-  function ball(n){var on=x.P.all.indexOf(n)>-1||x.D.indexOf(n)>-1||x.Y.indexOf(n)>-1,w=wxc(n);var mc={D:x.D,Y:x.Y,S:x.SN},mf=mkf(n,mc);return '<span class="bw">'+B(n,{L:1,rg:on?"g":w,ck:on,dim:!on&&!w&&!mf.st&&!mf.x,mk:mkb(n,mc)})+tg(n)+'</span>'}
+  function ball(n){var on=x.P.all.indexOf(n)>-1||x.D.indexOf(n)>-1||x.Y.indexOf(n)>-1,w=wxc(n);var mc={D:x.D,Y:x.Y,S:x.SN},mf=mkf(n,mc);return '<span class="bw">'+B(n,{L:1,rg:on?"g":w,ck:on,dim:!on&&!w&&!mf.st&&!mf.x,mk:mkb(n,mc)})+'<span class="tg">'+hwtag(n)+'</span>'+tg(n)+'</span>'}
   function lst(a,sp){var mc={D:x.D,Y:x.Y,S:x.SN};return a.length?a.map(function(n){return pad(n)+'('+(sp&&n===r.sp?'特':Z[mod(x.yb-(n-1),12)])+')'+mkt(n,mc)}).join(", "):"無"}
   return '<div class="rowb" style="margin-top:0">'+r.b.map(ball).join("")+'<span class="sp"><span class="small">特</span>'+ball(r.sp)+'</span></div>'
   +'<div class="ln small">'+(top?'上期':'')+'沖合池（'+x.P.all.length+' 個）：'+x.P.all.map(function(n){var w=wxc(n);return w?'<span class="'+(w==="w"?"nw":"nt2")+'">'+pad(n)+'</span>':pad(n)}).join(", ")+'　<span class="nw">尾生頭</span>／<span class="nt2">頭生尾</span></div>'
   +'<div class="ln"><span class="chip c">沖</span>中左：'+lst(x.c)+' <span class="chip h">合</span>中左：'+lst(x.h)+' <span class="chip s">三</span>中左：'+lst(x.s)+'</div>'
   +'<div class="ln"><span class="chip d">日肖</span>'+Z[x.pl.br]+'日 中左：'+lst(x.day7)+' <span class="chip y">年肖</span>'+Z[x.yb]+'年 中左：'+lst(x.yr7)+' <span class="chip k">歲煞</span>煞'+sh.d+'（尾 '+sh.t.join("、")+'）中左：'+lst(x.sha7,1)+'</div>'
-  +'<div class="ln"><span class="chip w">尾生頭</span>中左：'+lst(x.ws7,1)+' <span class="chip t">頭生尾</span>中左：'+lst(x.ts7,1)+'</div>'}
+  +'<div class="ln"><span class="chip w">尾生頭</span>中左：'+lst(x.ws7,1)+' <span class="chip t">頭生尾</span>中左：'+lst(x.ts7,1)+'</div>'
+  +(function(){var d7=r.b.concat(r.sp),f=function(e){return d7.filter(function(n){return hwx(n)===e})};
+    var c=function(lab,e){return '<span class="chip hwc hw-'+e+'">'+lab+'</span><b class="hw-'+e+'" style="font-weight:800">'+e+'</b>（字頭 '+HWR[e]+'）中左：'+lst(f(e),1)};
+    return '<div class="ln">'+c('日主 '+zm.st,zm.me)+' '+c('剋日主',zm.ke)+' '+c('日主剋',zm.ko)+'</div>'})()}
 function rc(x){
   var r=x.r;
   var odd=r.b.filter(function(n){return n%2}).length,sum=r.b.reduce(function(p,q){return p+q},0);
   return '<div class="row"><h2 style="margin:0">上期 '+r.iss+'（'+r.date+'）實際結果</h2><span style="font-size:17px;font-weight:700">'+x.pl.txt+'日（'+Z[x.pl.br]+'）</span><span class="small">'+dzmTxt(x.pl,r.b)+'</span><span class="small">單雙 '+odd+':'+(6-odd)+' · 和值 '+sum+(sum<150?' 小':' 大')+' · 字頭五行 '+hwstr(r.b)+(r.note?' · '+r.note:'')+'</span></div>'
   +'<div class="rowb"><span class="chip g">沖合池中左 '+x.all.length+' 球</span><span class="chip c">沖中 '+x.c.length+'</span><span class="chip h">合中 '+x.h.length+'</span><span class="chip s">三合中 '+x.s.length+'</span><span class="chip d">日肖中 '+x.day7.length+'</span><span class="chip y">年肖中 '+x.yr7.length+'</span><span class="chip k">歲煞中 '+x.sha7.length+'</span><span class="chip w">尾生頭中 '+x.ws7.length+'</span><span class="chip t">頭生尾中 '+x.ts7.length+'</span><span class="chip nt"><span class="mkt st">★</span> 中 '+x.d.filter(function(n){return mkf(n,{D:x.D,Y:x.Y,S:x.SN}).st}).length+'</span><span class="chip nt"><span class="mkt x">✕</span> 中 '+x.d.filter(function(n){return mkf(n,{D:x.D,Y:x.Y,S:x.SN}).x}).length+'</span></div>'
   +rbody(x,true)+'<div class="ln"><span class="chip nt">組合</span>'+cmbs(x)+'</div>'}
-var LEGEND='<div class="ln small" style="margin-top:10px">球上標記：<em class="tk d">日</em> 當日生肖　<em class="tk y">年</em> 年生肖　<em class="tk s">煞</em> 歲煞尾數　<em class="tk w">尾</em> 尾生頭　<em class="tk t">頭</em> 頭生尾　<span class="mkt st">★</span> 日肖＋尾生頭　<span class="mkt x">✕</span> 歲煞＋尾生頭（各組獨立計；沖／合／三合命中只計 6 個正選號碼，日肖／年肖／歲煞／尾生頭／頭生尾連特別號碼一齊計）</div>';
+var LEGEND='<div class="ln small" style="margin-top:10px">球下五行：字頭五行（01–09 土、10–19 水、20–29 火、30–39 木、40–49 金）；「剋我」＝剋日主、「我剋」＝日主剋、「主」＝同日主　球上標記：<em class="tk d">日</em> 當日生肖　<em class="tk y">年</em> 年生肖　<em class="tk s">煞</em> 歲煞尾數　<em class="tk w">尾</em> 尾生頭　<em class="tk t">頭</em> 頭生尾　<span class="mkt st">★</span> 日肖＋尾生頭　<span class="mkt x">✕</span> 歲煞＋尾生頭（各組獨立計；沖／合／三合命中只計 6 個正選號碼，日肖／年肖／歲煞／尾生頭／頭生尾連特別號碼一齊計）</div>';
 function lastRes(){
   var el=$("lastcard");
   if(!rows.length){el.innerHTML='<h2>上期實際結果</h2><p class="small">喺下面輸入開獎資料後撳「分析」，就會顯示上期結果同命中分析。</p>';return}
