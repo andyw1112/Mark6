@@ -133,6 +133,7 @@ span.hw-金{color:#b8860b}span.hw-木{color:#2e8b57}span.hw-水{color:#1f6fb4}sp
 em.hw-金{color:#b8860b}em.hw-木{color:#2e8b57}em.hw-水{color:#1f6fb4}em.hw-火{color:#d0402b}em.hw-土{color:#8a6d3b}
 .chip.hwc{background:var(--sf);border:1.5px solid currentColor}.chip.hw-金{color:#b8860b}.chip.hw-木{color:#2e8b57}.chip.hw-水{color:#1f6fb4}.chip.hw-火{color:#d0402b}.chip.hw-土{color:#8a6d3b}
 b.hw-金{color:#b8860b}b.hw-木{color:#2e8b57}b.hw-水{color:#1f6fb4}b.hw-火{color:#d0402b}b.hw-土{color:#8a6d3b}
+.rmk{border:1px solid var(--gold);background:rgba(242,194,48,.08);border-radius:8px;padding:8px 10px;margin-bottom:10px;font-size:14px}.rmk ol{margin:4px 0 0;padding-left:20px;line-height:1.7}
 .disc{font-size:12px;color:var(--mut);border-top:1px solid var(--ln);padding-top:14px;margin-top:24px}
 </style>
 </head>
@@ -168,7 +169,6 @@ b.hw-金{color:#b8860b}b.hw-木{color:#2e8b57}b.hw-水{color:#1f6fb4}b.hw-火{co
   </div>
   <div class="swin"><span class="small">統計期數</span><div class="seg" id="swin"><button data-v="20" class="on">近 20 期</button><button data-v="50">50</button><button data-v="100">100</button><button data-v="300">300</button><button data-v="9999">全部</button></div><span class="small" id="swinfo"></span></div>
   <div class="grps" id="grps"></div>
-  <div class="dzx" id="dzx"></div>
   <div class="pick" id="pick"></div>
 </section>
 
@@ -441,7 +441,14 @@ function sball(n,cls){var L=lab(n,HC);return '<span class="bw" draggable="true" 
 function renderPick(){
   var el=$("pick");if(!el||!HC)return;
   var Bk=[],Lg=[];for(var n=1;n<=49;n++){if(SEL[n]==="b")Bk.push(n);else if(SEL[n]==="l")Lg.push(n)}
-  var h='<h3>自選組合</h3><p class="small" style="margin:0 0 8px">揀「膽」或「腳」，再㩒下面 1–49 或者上面 4 組入面嘅號碼（電腦可以直接拉入框）。再㩒一次取消。</p>'
+  var B0=baseFor($("date").value),cb=B0.p.br,yb0=yearOf(),sg0=shaOf(cb),zm0=dzm(B0.p.stem);
+  var rmk='<div class="rmk"><strong>揀號碼提醒（今期 '+B0.p.txt+'日）</strong><ol>'
+    +'<li>沖（'+Z[mod(cb+6,12)]+'）＋六合（'+Z[mod(1-cb,12)]+'）＋三合（'+Z[mod(cb+4,12)]+'、'+Z[mod(cb+8,12)]+'）通常有 3–4 個；三合每個生肖通常 1 個</li>'
+    +'<li>日肖（'+Z[cb]+'）／年肖（'+Z[yb0]+'）通常 1 個</li>'
+    +'<li>歲煞（煞'+sg0.d+'，尾 '+sg0.t.join("、")+'）通常 1 個</li>'
+    +'<li>頭生尾＋尾生頭通常 3–4 個</li>'
+    +'<li>日主剋（<b class="hw-'+zm0.ko+'">'+zm0.ko+'</b>，字頭 '+HWR[zm0.ko]+'）通常都有 2 個</li></ol></div>';
+  var h=rmk+'<h3>自選組合</h3><p class="small" style="margin:0 0 8px">揀「膽」或「腳」，再㩒下面 1–49 或者上面 4 組入面嘅號碼（電腦可以直接拉入框）。再㩒一次取消。</p>'
    +'<div class="row" style="gap:8px"><div class="seg" id="pkmode"><button data-m="b" class="'+(PMODE==="b"?"on":"")+'">揀膽</button><button data-m="l" class="'+(PMODE==="l"?"on":"")+'">揀腳</button></div><button id="pkclr">清除</button><span class="small neg" id="pkmsg"></span></div>'
    +'<div class="dz" data-dz="b"><b>膽（'+Bk.length+'）</b>'+(Bk.length?Bk.map(function(n){return sball(n,"pb")}).join(""):'<span class="small">拉號碼入嚟或者揀「揀膽」再㩒號碼</span>')+'</div>'
    +'<div class="dz" data-dz="l"><b>腳（'+Lg.length+'）</b>'+(Lg.length?Lg.map(function(n){return sball(n,"pl")}).join(""):'<span class="small">拉號碼入嚟或者揀「揀腳」再㩒號碼</span>')+'</div>'
