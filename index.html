@@ -268,7 +268,7 @@ function render(){
   var g="";for(var n=1;n<=49;n++){var k=P.c.n.indexOf(n)>-1?"c":P.h.n.indexOf(n)>-1?"h":($("san").checked&&P.s.n.indexOf(n)>-1)?"s":"";
     g+='<div class="cell '+k+'"><span class="n '+col(n)+'">'+(n<10?"0"+n:n)+mkb(n)+cdb(n)+hwb(n)+'</span>'+Z[mod(yearOf()-(n-1),12)]+(wxc(n)==="w"?'<span class="wxl nw">尾生頭</span>':wxc(n)==="t"?'<span class="wxl nt2">頭生尾</span>':'')+'</div>'}
   $("g49").innerHTML=g;heroStats();backtest()}
-var NEXT={"issue": "26/125", "date": "2026-11-26", "cutoff": "21:15", "jackpot": null, "snowball": null, "snowballName": "", "updated": "2026-11-24"};
+var NEXT={"issue": "26/125", "date": "2026-11-28", "cutoff": "21:15", "jackpot": null, "snowball": null, "snowballName": "", "manual": true, "updated": "2026-11-25"};
 function renderNext(n){
   var el=$("nextcard");if(!n||!n.issue){el.style.display="none";return}
   var d=n.date||"",wd=d?"（"+WD[new Date(+d.slice(0,4),+d.slice(5,7)-1,+d.slice(8)).getDay()]+"）":"";

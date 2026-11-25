@@ -1,4 +1,4 @@
-# next {"issue":"26/125","date":"2026-11-26","cutoff":"21:15","jackpot":null,"snowball":null,"snowballName":"","updated":"2026-11-24"}
+# next {"issue":"26/125","date":"2026-11-28","cutoff":"21:15","jackpot":null,"snowball":null,"snowballName":"","manual":true,"updated":"2026-11-25"}
 26/124, 2026-11-24, 1 20 26 28 35 41, 36 | 幸運二金多寶
 26/123, 2026-11-19, 12 18 32 45 47 49, 41
 26/122, 2026-11-17, 4 7 18 30 42 45, 36 | 頭獎無人中
